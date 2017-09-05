@@ -22,7 +22,12 @@
 Dealer::Dealer() {
     _cards = Card::getDeck(Rule::instance()->deck);
     _hand = nullptr;
-    _resultCounter = new Counter<std::string>();
+    _handRankCounter = new Counter<std::string>();
+    _counter = nullptr;
+    
+    for(int i = 0; i < 10; i++) {
+        _handRankCounterForEachRanks[i] = new Counter<std::string>();
+    }
 }
 
 Dealer::~Dealer() {
@@ -30,7 +35,11 @@ Dealer::~Dealer() {
         delete _hand;
     }
     
-    delete _resultCounter;
+    delete _handRankCounter;
+
+    for(const auto& counter : _handRankCounterForEachRanks) {
+        delete counter;
+    }
 }
 
 void Dealer::shuffle() {
@@ -39,11 +48,24 @@ void Dealer::shuffle() {
     std::random_device rnd;
     std::mt19937_64 mt(rnd());
     std::shuffle(std::begin(_cards), std::end(_cards), mt);
+
+    if(_counter != nullptr) {
+        _counter->onShuffle();
+    }
 }
 
 bool Dealer::needsShuffle() const {
     return _cards.size() <=
         Rule::instance()->deck * 52 * (100 - Rule::instance()->penetration) / 100;
+}
+
+void Dealer::dealHandTo(Player* player) {
+    std::vector<Card*> cards;
+    for(int i = 0; i < 2; i++) {
+        cards.push_back(deal());
+    }
+    
+    player->receive(cards);
 }
 
 void Dealer::dealHandToSelf() {
@@ -52,39 +74,74 @@ void Dealer::dealHandToSelf() {
     }
     
     std::vector<Card*> cards;
-    for(int i = 0; i < 2; i++) {
-        cards.push_back(deal());
-    }
-
+    _upCard = deal();
+    cards.push_back(_upCard);
+    _holeCard = _cards.back();
+    _cards.pop_back();
+    cards.push_back(_holeCard);
+    
     _hand = new Hand(cards);
 }
 
 Card* Dealer::deal() {
     auto card = _cards.back();
     _cards.pop_back();
+    
+    if(_counter != nullptr) {
+        _counter->count(card);
+    }
+    
     return card;
+}
+
+bool Dealer::hasAce() const {
+    return _upCard->rank() == A;
 }
 
 bool Dealer::hasBlackjack() const {
     return _hand->isBlackjack();
 }
 
-void Dealer::recordResult() {
-    std::string result;
-    if(_hand->isBlackjack()) result = "BJ";
-    else if(_hand->isBusted()) result = "Bust";
-    else result = std::to_string(_hand->rank());
+bool Dealer::isBusted() const {
+    return _hand->isBusted();
+}
 
-    _resultCounter->count(result);
+void Dealer::recordResult() {
+    _handRankCounter->count(_hand->rankString());
+    auto index = _upCard->rank() == A ? 9 : _upCard->rank() - 2;
+    _handRankCounterForEachRanks[index]->count(_hand->rankString());
 }
 
 void Dealer::doAction() {
+    if(_counter != nullptr) {
+        _counter->count(_holeCard);
+    }
+    
     while(_hand->rank() < 17 || (_hand->isSoft17() && Rule::instance()->hitSoft17)) {
         _hand->add(deal());
     }
 }
 
+int Dealer::upCardRank() const {
+    return _upCard->rank();
+}
+
+int Dealer::handRank() const {
+    return _hand->rank();
+}
+
+void Dealer::add(Player* counter) {
+    _counter = counter;
+}
 
 std::string Dealer::toString() const {
-    return _resultCounter->toStringInDescendingOrder();
+    std::string result = "############# Dealer ##############\n";
+    result += "Hand distribution(all)\n" + _handRankCounter->toStringInDescendingOrder() + "\n";
+    /*
+    for(int i = 0; i < 10; i++) {
+        result += "\nHand distribution(upcard:" + (i == 9 ? "A" : std::to_string(i + 2)) + ")\n";
+        result += _handRankCounterForEachRanks[i]->toStringInDescendingOrder() + "\n";
+    }
+    */
+    return result;
 }

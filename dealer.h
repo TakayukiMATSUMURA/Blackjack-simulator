@@ -26,6 +26,7 @@
 #include "./rule.h"
 #include "./card.h"
 #include "./hand.h"
+#include "./player.h"
 #include "./lib/singleton.h"
 #include "./lib/counter.h"
 
@@ -40,11 +41,21 @@ public:
     
     void shuffle();
     bool needsShuffle() const;
+    void dealHandTo(Player*);
     void dealHandToSelf();
     Card* deal();
+    bool hasAce() const;
     bool hasBlackjack() const;
+    bool isBusted() const;
     void recordResult();
     void doAction();
+
+    int upCardRank() const;
+    int handRank() const;
+    
+    void pay(Player*, float);
+    
+    void add(Player*);
     
     std::string toString() const;
     
@@ -55,7 +66,11 @@ private:
     
     std::vector<Card*> _cards;
     
+    Card* _upCard;
+    Card* _holeCard;
     Hand* _hand;
+    Counter<std::string>* _handRankCounter;
+    Counter<std::string>* _handRankCounterForEachRanks[10];
     
-    Counter<std::string>* _resultCounter;
+    Player* _counter;
 };

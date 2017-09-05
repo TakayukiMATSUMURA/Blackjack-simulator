@@ -18,9 +18,19 @@
  */
 /**********************************************************************/
 #include "./hand.h"
+#include "./dealer.h"
 
-Hand::Hand(std::vector<Card*>& cards) {
+Hand::Hand(Card* card, int bet) {
+    _cards.push_back(card);
+    _bet = bet;
+    _isSurrendered = false;
+}
+
+Hand::Hand(std::vector<Card*>& cards, int bet) {
     _cards = cards;
+    _isDoubledown = false;
+    _bet = bet;
+    _isSurrendered = false;
 }
 
 Hand::~Hand() {
@@ -33,6 +43,10 @@ int Hand::rank() const {
     if(isSoft()) result += 10;
     
     return result;
+}
+
+void Hand::add(Card* card) {
+    _cards.push_back(card);
 }
 
 bool Hand::isBlackjack() const {
@@ -53,15 +67,70 @@ bool Hand::isSoft() const {
             break;
         }
     }
-    return hasAce && sum() < 11;
+    return hasAce && sum() <= 11;
 }
 
 bool Hand::isSoft17() const {
     return isSoft() && rank() == 17;
 }
 
-void Hand::add(Card* card) {
-    _cards.push_back(card);
+bool Hand::isPair() const {
+    return _cards.size() == 2 && _cards[0]->rank() == _cards[1]->rank();
+}
+
+bool Hand::isPairOf(int rank) const {
+    return isPair() && _cards[0]->rank() == rank;
+}
+
+bool Hand::isDoubledown() const {
+    return _isDoubledown;
+}
+
+bool Hand::canDoubleDownOrSurrender() const {
+    return _cards.size() == 2;
+}
+
+void Hand::doubleDownWith(Card* card) {
+    add(card);
+    _isDoubledown = true;
+    _bet *= 2;
+}
+
+Hand* Hand::split() {
+    auto card = _cards.back();
+    _cards.pop_back();
+    auto newHand = new Hand(card);
+    add(Dealer::instance()->deal());
+    newHand->add(Dealer::instance()->deal());
+    return newHand;
+}
+
+void Hand::surrender() {
+    _isSurrendered = true;
+}
+
+bool Hand::isSurrendered() const {
+    return _isSurrendered;
+}
+
+int Hand::bet() const {
+    return _bet;
+}
+
+std::string Hand::rankString() const {
+    if(isBlackjack()) return "BJ";
+    else if(isBusted()) return "Bust";
+    return std::to_string(rank());
+}
+
+std::string Hand::toString() const {
+    std::string result;
+    for(const auto& card : _cards) {
+        result += card->toString();
+    }
+    result += ":" + rankString();
+    result += " " + std::to_string(bet()) + "bet";
+    return result;
 }
 
 int Hand::sum() const {

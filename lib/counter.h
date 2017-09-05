@@ -45,6 +45,22 @@ public:
         return (double)_histogram.find(index)->second / (double)sum;
     }
     
+    std::string getStringPercentageOf(IndexType index) const {
+        std::string result;
+        result += std::to_string(getRateOf(index) * 100) + "%";
+        
+        unsigned long long int sum = 0;
+        for(auto it = _histogram.begin(); it != _histogram.end(); it++)
+            sum += it->second;
+
+        if(sum == 0) return "NaN";
+        
+        result += "(" + std::to_string(_histogram.find(index)->second) +
+            "/" + std::to_string(sum) + ")";
+        
+        return result;
+    }
+    
     void reset() {
         _histogram.clear();
     }
