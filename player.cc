@@ -105,6 +105,11 @@ void Player::doAction() {
                 _bankroll -= currentHand->bet();
                 _totalBetAmount += currentHand->bet();
                 
+                if(currentHand->isPairOf(A)) {
+                    action = Stand;
+                    handCounter++;
+                }
+                
                 auto newHand = currentHand->split();
                 _hands.push_back(newHand);
             }
