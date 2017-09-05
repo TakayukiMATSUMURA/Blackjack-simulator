@@ -37,7 +37,13 @@ public:
                 (hand->rank() >= 17) ? "17" : std::to_string(hand->rank());
             
             auto result = _csvreader->getContent(playersHand, dealersUpCard);
-            if(hand->rank() >= 12) {
+            
+            if(hand->rank() >= 14) {
+                if(result == "A" && _runningCount >= 4) {
+                    return Surrender;
+                }
+            }
+            else if(hand->rank() >= 12) {
                 if(result == "A") return _runningCount >= 4 ? Stand : Hit;
                 if(result == "B") return _runningCount >= initialRunningCount ? Stand : Hit;
                 if(result == "C") {
