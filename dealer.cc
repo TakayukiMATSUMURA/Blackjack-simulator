@@ -144,12 +144,16 @@ void Dealer::add(Player* counter) {
 
 std::string Dealer::toString() const {
     std::string result = "############# Dealer ##############\n";
-    result += "Hand distribution(all)\n" + _handRankCounter->toStringInDescendingOrder() + "\n";
-    /*
-    for(int i = 0; i < 10; i++) {
-        result += "\nHand distribution(upcard:" + (i == 9 ? "A" : std::to_string(i + 2)) + ")\n";
-        result += _handRankCounterForEachRanks[i]->toStringInDescendingOrder() + "\n";
+    if(!Config::instance()->displaysDealerDetails) {
+        result += "Hand distribution\n" + _handRankCounter->toStringInDescendingOrder() + "\n";
     }
-    */
+    else {
+        for(int i = 0; i < 10; i++) {
+            result += "Hand distribution(upcard:" + (i == 9 ? "A" : std::to_string(i + 2)) + ")\n";
+            result += _handRankCounterForEachRanks[i]->toStringInDescendingOrder() + "\n\n";
+        }
+        
+        result += "Hand distribution(all)\n" + _handRankCounter->toStringInDescendingOrder();
+    }
     return result;
 }

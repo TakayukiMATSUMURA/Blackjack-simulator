@@ -32,7 +32,7 @@ Rule::Rule(Parameters params) : deck(params.deck),
     }
     std::cout << "penetration:" << penetration << "%" << std::endl;
     if(hitSoft17) {
-        std::cout << "hit soft 17" << std::endl;
+        std::cout << "dealer hits soft 17" << std::endl;
     }
     std::cout << std::endl;
 }

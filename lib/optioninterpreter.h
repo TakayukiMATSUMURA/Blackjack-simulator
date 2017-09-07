@@ -65,7 +65,7 @@ public:
     }
     
     virtual void analize(int argc, char *argv[]) {
-        if(argc == 1) showUsages();
+        if(argc == 1) return;
         
         for(int i = 1; i < argc; i++) {
             auto option = std::string(argv[i]);
@@ -78,7 +78,7 @@ public:
                     std::string(argv[i + 1]) : "";
                 if(arg == "") {
                     std::cout << "error: " << option
-                              << " option needs any argument" << std::endl;
+                              << " is invalid option" << std::endl;
                     exit(0);
                 }
                 
@@ -103,8 +103,6 @@ public:
         std::cout << "options" << std::endl;
         for(auto& usage : _usages)
             std::cout << usage << std::endl;
-        
-        exit(0);
     }
 protected:
     std::map<std::string, FunctionWithArgment> _functionsWithArgment;

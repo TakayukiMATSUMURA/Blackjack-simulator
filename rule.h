@@ -31,10 +31,10 @@ public:
     const bool DaS;
     const int penetration;
     const bool hitSoft17;
-
+    
     struct Parameters {
         bool DaS = false;
-        int deck = 2;
+        int deck = 6;
     };
 
     static Parameters parameters;
