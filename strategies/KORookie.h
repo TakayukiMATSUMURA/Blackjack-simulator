@@ -44,6 +44,13 @@ public:
     int betAmount(int unit) const override {
         return _runningCount >= keyCount ? unit * _spread : unit;
     }
+
+    std::string toString() const override {
+        std::string result = "KO rookie";
+        result += "(key count:" + std::to_string(keyCount);
+        result += " running count:" + std::to_string(_runningCount) + ")";
+        return result;
+    }
     
     const int initialRunningCount;
     const int keyCount;

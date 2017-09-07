@@ -22,6 +22,7 @@
 #include <vector>
 #include <random>
 #include <string>
+#include <iostream>
 
 #include "./rule.h"
 #include "./card.h"

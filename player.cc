@@ -43,12 +43,18 @@ Player::~Player() {
 }
 
 void Player::bet(int unit) {
+    _takesInsurance = false;
+    
     int amount = _strategy->betAmount(unit);
     _betAmount = amount;
     _bankroll -= _betAmount;
     _totalBetAmount += _betAmount;
     
-    _takesInsurance = false;
+    if(Config::instance()->isDebugMode) {
+        std::cout << "Player's bankroll:" << (_bankroll + _betAmount) << std::endl;
+        std::cout << "Strategy:" << _strategy->toString() << std::endl;
+        std::cout << "Player bets:" << _betAmount << std::endl;
+    }
 }
 
 int Player::betAmount() const {
@@ -58,21 +64,35 @@ int Player::betAmount() const {
 void Player::receive(std::vector<Card*>& cards) {
     auto hand = new Hand(cards, _betAmount);
     _hands.push_back(hand);
+
+    if(Config::instance()->isDebugMode) {
+        std::cout << "Player's hand:" << hand->toString() << std::endl;
+    }
 }
 
 void Player::getPrize(float rate, Hand* hand) {
-    int prize = hand == nullptr ? _betAmount : hand->bet() * rate;
+    if(hand == nullptr) hand = _hands[0];
+    
+    int prize = hand->bet() * rate;
     _bankroll += prize;
     _totalPrizeAmount += prize;
+    
+    if(Config::instance()->isDebugMode) {
+        std::cout << "Player gets " << prize  << " with " << hand->toString() << std::endl;
+    }
 }
 
 void Player::doInsuranceOrNot() {
     if(!_strategy->takesInsurance()) return;
     
+    _takesInsurance = true;
     _bankroll -= _betAmount / 2;
     _totalBetAmount += _betAmount / 2;
     
     _insuranceCounter->count(Dealer::instance()->hasBlackjack());
+    if(Config::instance()->isDebugMode) {
+        std::cout << "Player takes insurance(bet:" << (_betAmount / 2) << ")" << std::endl;
+    }
 }
 
 bool Player::takesInsurance() const {
@@ -80,16 +100,33 @@ bool Player::takesInsurance() const {
 }
 
 void Player::doAction() {
+    if(hasBlackjack()) return;
+    
     auto dealer = Dealer::instance();
     int handCounter = 0;
     while(handCounter < _hands.size()) {
         auto currentHand = _hands[handCounter++];
         int action = -1;
-        while(action != Stand && action != DoubleDown && action != Surrender) {
+        
+            
+        if(Config::instance()->isDebugMode) {
+            std::cout << "Player's hand:" << currentHand->toString() << std::endl;
+        }
+        while(action != Stand && action != DoubleDown && action != Surrender && !currentHand->isBusted()) {
             action = _strategy->getAction(currentHand, dealer->upCardRank());
             if(_hands.size() > 2) {
                 if(action == Surrender) action = Hit;
-                if(action == DoubleDown) action = Hit;
+                if(action == DoubleDown && !Rule::instance()->DaS) action = Hit;
+            }
+
+            if(Config::instance()->isDebugMode && !currentHand->isBusted()) {
+                auto actionString = action == Hit ? "Hit" :
+                    action == Surrender ? "Surrender" :
+                    action == Split ? "Split" :
+                    action == DoubleDown ? "Double down": "Stand";
+                if(!currentHand->isBusted()) {
+                    std::cout << "action:" << actionString << std::endl;
+                }
             }
             
             if(action == Hit) {
@@ -116,6 +153,10 @@ void Player::doAction() {
             else if(action == Surrender) {
                 currentHand->surrender();
             }
+            
+            if(Config::instance()->isDebugMode) {
+                std::cout << "hand:" << currentHand->toString() << std::endl;
+            }
         }
         
         _surrenderCounter->count(action == Surrender);
@@ -124,11 +165,24 @@ void Player::doAction() {
 
 void Player::adjust() {
     auto dealer = Dealer::instance();
+    if(dealer->hasBlackjack()) {
+        if(hasBlackjack()) {
+            getPrize(1, _hands[0]);
+        }
+        
+        return;
+    }
     
+    if(hasBlackjack()) {
+        getPrize(2.5, _hands[0]);
+        return;
+    }
+
     for(const auto& hand : _hands) {
         if(hand->isBusted()) continue;
+
         if(hand->isSurrendered()) {
-            getPrize(0.5, hand);
+            getPrize(1, hand);
         }
         else if(hand->rank() > dealer->handRank() || dealer->isBusted()) {
             getPrize(2, hand);
@@ -136,7 +190,6 @@ void Player::adjust() {
         else if(hand->rank() == dealer->handRank()) {
             getPrize(1, hand);
         }
-        
     }
 }
 
@@ -220,7 +273,7 @@ float Player::expectedValue() const {
 }
 
 std::string Player::toString() const {
-    std::string result = "############# Player ###############\n";
+    std::string result = "############# Player ##############\n";
     result += "Result\n" + _resultCounter->toStringInDescendingOrder() + "\n\n";
     result += "Insurance accuracy\n" + _insuranceCounter->getStringPercentageOf(true) + "\n";
     result += "Surrender\n" + _surrenderCounter->getStringPercentageOf(true) + "\n\n";

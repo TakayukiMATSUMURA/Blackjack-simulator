@@ -99,7 +99,7 @@ void Hand::doubleDownWith(Card* card) {
 Hand* Hand::split() {
     auto card = _cards.back();
     _cards.pop_back();
-    auto newHand = new Hand(card);
+    auto newHand = new Hand(card, bet());
     add(Dealer::instance()->deal());
     newHand->add(Dealer::instance()->deal());
     return newHand;
@@ -107,6 +107,7 @@ Hand* Hand::split() {
 
 void Hand::surrender() {
     _isSurrendered = true;
+    _bet /= 2;
 }
 
 bool Hand::isSurrendered() const {
@@ -128,8 +129,11 @@ std::string Hand::toString() const {
     for(const auto& card : _cards) {
         result += card->toString();
     }
+    
     result += ":" + rankString();
-    result += " " + std::to_string(bet()) + "bet";
+    if(bet() > 0) {
+        result += " " + std::to_string(bet()) + "bet";
+    }
     return result;
 }
 

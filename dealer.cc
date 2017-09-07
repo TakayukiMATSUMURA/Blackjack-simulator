@@ -81,6 +81,10 @@ void Dealer::dealHandToSelf() {
     cards.push_back(_holeCard);
     
     _hand = new Hand(cards);
+
+    if(Config::instance()->isDebugMode) {
+        std::cout << "Dealer's upcard:" << _upCard->toString() << std::endl;
+    }
 }
 
 Card* Dealer::deal() {
@@ -119,6 +123,10 @@ void Dealer::doAction() {
     
     while(_hand->rank() < 17 || (_hand->isSoft17() && Rule::instance()->hitSoft17)) {
         _hand->add(deal());
+    }
+
+    if(Config::instance()->isDebugMode) {
+        std::cout << "Dealer's hand:" << _hand->toString() << std::endl;
     }
 }
 

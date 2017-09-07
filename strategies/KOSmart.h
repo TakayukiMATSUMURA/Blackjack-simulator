@@ -68,13 +68,20 @@ public:
                 }
             }
         }
-        
         return BasicStrategy::getAction(hand, dealersUpcardRank);
     }
     
     bool takesInsurance() const override {
         return _runningCount >= 3;
     }
+    
+    std::string toString() const override {
+        std::string result = "KO smart";
+        result += "(key count:" + std::to_string(keyCount);
+        result += " running count:" + std::to_string(_runningCount) + ")";
+        return result;
+    }
+    
 protected:
 
 private:

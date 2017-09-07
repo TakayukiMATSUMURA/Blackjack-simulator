@@ -19,7 +19,10 @@
 /**********************************************************************/
 #pragma once
 
+#include <iostream>
+
 #include "./hand.h"
+#include "./config.h"
 #include "./strategies/istrategy.h"
 #include "./lib/counter.h"
 

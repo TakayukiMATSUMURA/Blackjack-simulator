@@ -22,6 +22,10 @@ int main(int argc, char *argv[]) {
         dealer->shuffle();
         
         while(!dealer->needsShuffle()) {
+            if(Config::instance()->isDebugMode) {
+                std::cout << "Game:" << gameCounter << " start" << std::endl;
+            }
+            
             player->bet(10);
             
             dealer->dealHandTo(player);            
@@ -52,6 +56,10 @@ int main(int argc, char *argv[]) {
             
             player->recordResult();
             dealer->recordResult();
+            if(Config::instance()->isDebugMode) {
+                std::cout << std::endl;
+            }
+            
         }
     }
 

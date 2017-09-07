@@ -85,6 +85,8 @@ public:
     }
 
     int betAmount(int unit) const override { return unit; }
+
+    std::string toString() const override { return "Basic strategy"; }
     
 private:
     CSVReader* _csvreader;

@@ -19,6 +19,8 @@
 /**********************************************************************/
 #pragma once
 
+#include <string>
+
 #include "../hand.h"
 
 enum {
@@ -39,4 +41,5 @@ public:
     virtual int getAction(Hand*, int) const = 0;
     virtual bool takesInsurance() const = 0;
     virtual int betAmount(int) const = 0;
+    virtual std::string toString() const = 0;
 };
