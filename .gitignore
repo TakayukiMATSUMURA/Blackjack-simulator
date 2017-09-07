@@ -27,6 +27,7 @@
 *.lib
 
 # Executables
+blackjack-simulator
 *.exe
 *.out
 *.app
