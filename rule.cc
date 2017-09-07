@@ -1,5 +1,5 @@
 /**
- * rule.h
+ * rule.cc
  *
  * Copyright (C) 2017 Takayuki MATSUMURA
  *
@@ -17,33 +17,27 @@
  *
  */
 /**********************************************************************/
-#pragma once
+#include "./rule.h"
 
-#include <iostream>
+Rule::Parameters Rule::parameters;
 
-#include "./lib/singleton.h"
-
-class Rule : public Singleton<Rule> {
-public:
-    virtual ~Rule();
-    
-    const int deck;
-    const bool DaS;
-    const int penetration;
-    const bool hitSoft17;
-
-    struct Parameters {
-        bool DaS = false;
-        int deck = 2;
-    };
-
-    static Parameters parameters;
-    
-    static Rule* create() {
-        static Rule rule(parameters);
-        return &rule;
+Rule::Rule(Parameters params) : deck(params.deck),
+                                DaS(params.DaS),
+                                penetration(params.deck == 1 ? 65 : 75),
+                                hitSoft17(params.deck == 1) {
+    std::cout << "Rule" << std::endl;
+    std::cout << "deck:" << deck << std::endl;
+    if(DaS) {
+        std::cout << "DaS" << std::endl;
     }
+    std::cout << "penetration:" << penetration << "%" << std::endl;
+    if(hitSoft17) {
+        std::cout << "hit soft 17" << std::endl;
+    }
+    std::cout << std::endl;
+}
 
-private:
-    Rule(Parameters);
-};
+Rule::~Rule() {
+}
+
+

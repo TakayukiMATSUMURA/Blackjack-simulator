@@ -1,5 +1,5 @@
 /**
- * rule.h
+ * config.h
  *
  * Copyright (C) 2017 Takayuki MATSUMURA
  *
@@ -21,29 +21,40 @@
 
 #include <iostream>
 
+#include "./rule.h"
+#include "./strategies/istrategy.h"
+#include "./strategies/basicstrategy.h"
+#include "./strategies/KORookie.h"
+#include "./strategies/KOSmart.h"
 #include "./lib/singleton.h"
 
-class Rule : public Singleton<Rule> {
+class Config : public Singleton<Config> {
 public:
-    virtual ~Rule();
+    virtual ~Config();
     
-    const int deck;
-    const bool DaS;
-    const int penetration;
-    const bool hitSoft17;
-
-    struct Parameters {
-        bool DaS = false;
-        int deck = 2;
-    };
-
-    static Parameters parameters;
-    
-    static Rule* create() {
-        static Rule rule(parameters);
-        return &rule;
+    static Config* create() {
+        static Config instance(parameters);
+        return &instance;
     }
+    
+    const bool isDebugMode;
+    const std::string strategy;
+    const int betSpread;
+    const int game;
+    
+    IStrategy* getStrategy();
+    
+    struct Parameters {
+        bool isDebugMode = false;
+        std::string strategy = "basic";
+        int betSpread = 1;
+        int game = 10000;
+    };
+    
+    static Parameters parameters;
+protected:
 
 private:
-    Rule(Parameters);
+    Config(Parameters);
 };
+

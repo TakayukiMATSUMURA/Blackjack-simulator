@@ -23,12 +23,13 @@
 #include <string>
 #include <vector>
 #include <functional>
-
-namespace MyLibrary {
+#include <iostream>
 
 class OptionInterpreter {
-    
 public:
+    OptionInterpreter() {};
+    virtual ~OptionInterpreter() {};
+    
     using FunctionWithArgment = std::function<void(std::string)>;
     using FunctionWithoutArgment = std::function<void(void)>;
     
@@ -106,14 +107,7 @@ public:
         exit(0);
     }
 protected:
-    /// Default constructor
-    OptionInterpreter() {};
-    /// Destructor
-    virtual ~OptionInterpreter() {};
-    
     std::map<std::string, FunctionWithArgment> _functionsWithArgment;
     std::map<std::string, FunctionWithoutArgment> _functionsWithoutArgment;
     std::vector<std::string> _usages;
 };
-
-} // MyLibrary

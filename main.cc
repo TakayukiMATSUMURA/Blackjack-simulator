@@ -8,17 +8,34 @@
 #include "./lib/optioninterpreter.h"
 
 int main(int argc, char *argv[]) {
+    auto optionInterpreter = new OptionInterpreter();
+    optionInterpreter->add("debug", ":debug mode(display all games)", [&](){
+            Config::parameters.isDebugMode = true;
+        });
+    optionInterpreter->add("d", ":deck", [&](std::string arg){
+            Rule::parameters.deck = std::stoi(arg);
+        });
+    optionInterpreter->add("s", ":strategy(basic or KORookie or KOSmart)", [&](std::string arg){
+            Config::parameters.strategy = arg;
+        });
+    optionInterpreter->add("b", ":bet spread", [&](std::string arg){
+            Config::parameters.betSpread = std::stoi(arg);
+        });
+    optionInterpreter->add("g", ":game", [&](std::string arg){
+            Config::parameters.game = std::stoi(arg);
+        });
+    optionInterpreter->analize(argc, argv);
+    delete optionInterpreter;
+    
     auto dealer = Dealer::instance();
     
     int initialBankroll = 100;
-    //auto strategy = new BasicStrategy();
-    //auto strategy = new KORookie(Rule::instance()->deck, 10);
-    auto strategy = new KOSmart(Rule::instance()->deck, 2);
+    auto strategy = Config::instance()->getStrategy();
     auto player = new Player(initialBankroll, strategy);
     
     dealer->add(player);
-    
-    for(int i = 0; i < 10000; i++) {
+    int gameCounter = 0;
+    while(true) {
         dealer->shuffle();
         
         while(!dealer->needsShuffle()) {
@@ -38,17 +55,9 @@ int main(int argc, char *argv[]) {
                 if(player->takesInsurance()) {
                     player->getPrize(1.5);
                 }
-                if(player->hasBlackjack()) {
-                    player->getPrize(1);
-                }
             }
             else {
-                if(player->hasBlackjack()) {
-                    player->getPrize(2.5);
-                }
-                else {
-                    player->doAction();
-                }
+                player->doAction();
             }
             dealer->doAction();
             
@@ -60,9 +69,11 @@ int main(int argc, char *argv[]) {
                 std::cout << std::endl;
             }
             
+            if(++gameCounter == Config::instance()->game) goto end;
         }
     }
-
+    end:
+    
     std::cout << "Simulation result" << std::endl;
     std::cout << player->toString() << std::endl;
     std::cout << std::endl;
