@@ -31,7 +31,6 @@ int main(int argc, char *argv[]) {
                 player->doInsuranceOrNot();
             }
             if(dealer->hasBlackjack()) {
-                dealer->doAction();
                 if(player->takesInsurance()) {
                     player->getPrize(1.5);
                 }
@@ -45,11 +44,12 @@ int main(int argc, char *argv[]) {
                 }
                 else {
                     player->doAction();
-                    dealer->doAction();
                 }
             }
+            dealer->doAction();
             
             player->adjust();
+            
             player->recordResult();
             dealer->recordResult();
         }
