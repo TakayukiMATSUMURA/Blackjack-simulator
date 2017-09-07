@@ -1,5 +1,5 @@
 # Blackjack-simulator
-Blackjack simulator, which simulates a player with [basic strategy](http://www.e-town21.com/lasvegas/casino/blackjack/bj_2.htm),
+Blackjack simulator, which simulates a player with [basic strategy](https://en.wikipedia.org/wiki/Blackjack#Basic_strategy),
 [card counting](https://en.wikipedia.org/wiki/Card_counting) and calculates expected value.
 
 ## Example
