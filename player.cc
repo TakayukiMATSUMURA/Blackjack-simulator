@@ -29,6 +29,7 @@ Player::Player(int bankroll, IStrategy* strategy) {
     
     _resultCounter = new Counter<std::string>();
     _handRankCounter = new Counter<std::string>();
+    _handRankAfterDoubleDownCounter = new Counter<std::string>();
     _insuranceCounter = new Counter<bool>();
     _doubledownCounter = new Counter<std::string>();
     _splitCounter = new Counter<int>();
@@ -38,6 +39,7 @@ Player::Player(int bankroll, IStrategy* strategy) {
 Player::~Player() {
     delete _strategy;
     delete _resultCounter;
+    delete _handRankAfterDoubleDownCounter;
     delete _doubledownCounter;
     delete _splitCounter;
 }
@@ -137,6 +139,7 @@ void Player::doAction() {
                 _totalBetAmount += currentHand->bet();
                 
                 currentHand->doubleDownWith(dealer->deal());
+                _handRankAfterDoubleDownCounter->count(currentHand->rankString());
             }
             else if(action == Split) {
                 _bankroll -= currentHand->bet();
@@ -278,6 +281,8 @@ std::string Player::toString() const {
     result += "Insurance accuracy\n" + _insuranceCounter->getStringPercentageOf(true) + "\n";
     result += "Surrender\n" + _surrenderCounter->getStringPercentageOf(true) + "\n\n";
     result += "Double down\n" + _doubledownCounter->toStringInDescendingOrder() + "\n\n";
+    result += "Hand distribution after Double down\n" + _handRankAfterDoubleDownCounter->toStringInDescendingOrder() + "\n\n";
+    
     result += "Split\n" + _splitCounter->toStringInDescendingOrder() + "\n\n";
     result += "Hand distribution\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
     auto ev = expectedValue() > 0 ? "+" + std::to_string(expectedValue() * 100) :

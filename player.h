@@ -64,6 +64,7 @@ private:
     
     Counter<std::string>* _resultCounter;
     Counter<std::string> * _handRankCounter;
+    Counter<std::string> * _handRankAfterDoubleDownCounter;
     Counter<bool>* _insuranceCounter;
     Counter<std::string>* _doubledownCounter;
     Counter<int>* _splitCounter;
