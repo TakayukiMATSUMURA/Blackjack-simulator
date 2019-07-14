@@ -217,47 +217,49 @@ void Player::recordResult() {
     }
     
     auto dealer = Dealer::instance();
-    
+    auto tie = "tie";
+    auto win = "win";
+    auto lose = "lose";
     for(const auto& hand : _hands) {
         if(dealer->hasBlackjack()) {
             if(hasBlackjack()) {
-                _resultCounter->count("tie");
+                _resultCounter->count(tie);
                 _handRankCounter->count(hand->rankString());
             }
             else {
-                _resultCounter->count("lose");
+                _resultCounter->count(lose);
                 _handRankCounter->count("Dealer BJ");
             }
         }
         else if(hand->isBusted()) {
-            _resultCounter->count("lose");
+            _resultCounter->count(lose);
             _handRankCounter->count(hand->rankString());
         }
         else if(hasBlackjack()) {
-            _resultCounter->count("win");
+            _resultCounter->count(win);
             _handRankCounter->count(hand->rankString());
         }
         else if(hand->isSurrendered()) {
-            _resultCounter->count("lose");
+            _resultCounter->count(lose);
             _handRankCounter->count(hand->rankString());
         }
         else {
             if(hand->rank() > dealer->handRank() || dealer->isBusted()) {
-                _resultCounter->count("win");
+                _resultCounter->count(win);
                 if(hand->isDoubledown()) {
-                    _doubledownCounter->count("win");
+                    _doubledownCounter->count(win);
                 }
             }
             else if(hand->rank() < dealer->handRank()) {
-                _resultCounter->count("lose");
+                _resultCounter->count(lose);
                 if(hand->isDoubledown()) {
-                    _doubledownCounter->count("lose");
+                    _doubledownCounter->count(lose);
                 }
             }
             else {
-                _resultCounter->count("tie");
+                _resultCounter->count(tie);
                 if(hand->isDoubledown()) {
-                    _doubledownCounter->count("tie");
+                    _doubledownCounter->count(tie);
                 }
             }
             
