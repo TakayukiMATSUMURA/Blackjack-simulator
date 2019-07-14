@@ -39,9 +39,12 @@ Player::Player(int bankroll, IStrategy* strategy) {
 Player::~Player() {
     delete _strategy;
     delete _resultCounter;
+    delete _handRankCounter;
     delete _handRankAfterDoubleDownCounter;
+    delete _insuranceCounter;
     delete _doubledownCounter;
     delete _splitCounter;
+    delete _surrenderCounter;
 }
 
 void Player::bet(int unit) {
