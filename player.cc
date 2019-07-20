@@ -221,27 +221,26 @@ void Player::recordResult() {
     auto win = "win";
     auto lose = "lose";
     for(const auto& hand : _hands) {
+        if(!(dealer->hasBlackjack() && !hasBlackjack())) {
+            _handRankCounter->count(hand->rankString());
+        }                
+        
         if(dealer->hasBlackjack()) {
             if(hasBlackjack()) {
                 _resultCounter->count(tie);
-                _handRankCounter->count(hand->rankString());
             }
             else {
                 _resultCounter->count(lose);
-                _handRankCounter->count("Dealer BJ");
             }
         }
         else if(hand->isBusted()) {
             _resultCounter->count(lose);
-            _handRankCounter->count(hand->rankString());
         }
         else if(hasBlackjack()) {
             _resultCounter->count(win);
-            _handRankCounter->count(hand->rankString());
         }
         else if(hand->isSurrendered()) {
             _resultCounter->count(lose);
-            _handRankCounter->count(hand->rankString());
         }
         else {
             if(hand->rank() > dealer->handRank() || dealer->isBusted()) {
@@ -261,13 +260,6 @@ void Player::recordResult() {
                 if(hand->isDoubledown()) {
                     _doubledownCounter->count(tie);
                 }
-            }
-            
-            if(hand->rank() == 21) {
-                _handRankCounter->count("21");
-            }
-            else {
-                _handRankCounter->count(hand->rankString());
             }
         }
         

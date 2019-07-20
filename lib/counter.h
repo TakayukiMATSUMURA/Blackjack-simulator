@@ -96,6 +96,7 @@ public:
         unsigned long long int prevEntryCounter = 0;
         int ranking = 0;
         for(auto it = sortedHistogram.rbegin(); it != sortedHistogram.rend(); it++) {
+            ranking++;
             ss << getRankingString(it->first, prevEntryCounter, ranking);
             
             ss << " ";
@@ -138,12 +139,11 @@ private:
     
     std::string getRankingString(unsigned long long count,
                                  unsigned long long prevEntryCounter,
-                                 int& ranking) const {
+                                 int ranking) const {
         std::stringstream ss;
         
         const int digit = getDigitOfEntries();
         if(count != prevEntryCounter) {
-            ranking++;
             ss << "[" << std::right << std::setw(digit) << ranking << "]";
             return ss.str();
         }
@@ -154,7 +154,10 @@ private:
     
     std::string getResultString() const {
         std::stringstream ss;
-        ss << "total          ";
+        ss << "total        ";
+        for(int i = 0; i < getDigitOfEntries(); i++) {
+            ss << " ";
+        }
         
         unsigned long long sum = 0;
         double totalPercentage = 0;
