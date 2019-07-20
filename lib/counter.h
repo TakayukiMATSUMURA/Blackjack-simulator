@@ -105,8 +105,13 @@ public:
             
             prevEntryCounter = it->first;
         }
-        ss << getResultString();
         
+        auto result = getResultString();
+        for(int i = 0; i < result.length(); i++) {
+            ss << "-";
+        }
+        ss << "\n";
+        ss << result;
         return ss.str();
     }
     
@@ -149,11 +154,7 @@ private:
     
     std::string getResultString() const {
         std::stringstream ss;
-        ss << "[";
-        for(int i = 0; i < getDigitOfEntries(); i++) ss << "-";
-        ss << "] ";
-        ss << std::left << std::setw(10);
-        ss << "total";
+        ss << "total          ";
         
         unsigned long long sum = 0;
         double totalPercentage = 0;
