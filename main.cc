@@ -3,6 +3,7 @@
 #include "./dealer.h"
 #include "./player.h"
 #include "./rule.h"
+#include "./simulation.h"
 #include "./strategies/basicstrategy.h"
 #include "./strategies/KOSmart.h"
 #include "./lib/optioninterpreter.h"
@@ -50,59 +51,10 @@ int main(int argc, char *argv[]) {
     }
     delete optionInterpreter;
     
-    auto dealer = Dealer::instance();
     int initialBankroll = 100;
     auto strategy = Config::instance()->getStrategy();
     auto player = new Player(initialBankroll, strategy);
-    dealer->add(player);
-    int gameCounter = 0;
-    
-    std::cout << "Simulation start" << std::endl;
-    while(true) {
-        dealer->shuffle();
-        
-        while(!dealer->needsShuffle()) {
-            if(Config::instance()->isDebugMode) {
-                std::cout << "Game:" << gameCounter << " start" << std::endl;
-            }
-            
-            player->bet(10);
-            
-            dealer->dealHandTo(player);            
-            dealer->dealHandToSelf();
-            
-            if(dealer->hasAce()) {
-                player->doInsuranceOrNot();
-            }
-            if(dealer->hasBlackjack()) {
-                if(player->takesInsurance()) {
-                    player->getPrize(1.5);
-                }
-            }
-            else {
-                player->doAction();
-            }
-            dealer->doAction();
-            
-            player->adjust();
-            
-            player->recordResult();
-            dealer->recordResult();
-            if(Config::instance()->isDebugMode) {
-                std::cout << std::endl;
-            }
-            
-            if(++gameCounter == Config::instance()->game) goto end;
-        }
-    }
-    end:
-    std::cout << "Simulation finish" << std::endl;
-    std::cout << std::endl;
-    
-    std::cout << "Simulation results" << std::endl;
-    std::cout << player->toString() << std::endl;
-    std::cout << std::endl;
-    std::cout << dealer->toString() << std::endl;
+    Simulation::start(player, Config::instance()->game);
 
     delete player;
     return 0;
