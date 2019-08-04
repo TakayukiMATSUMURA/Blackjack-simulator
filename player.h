@@ -68,5 +68,4 @@ private:
     Counter<bool>* _insuranceCounter;
     Counter<std::string>* _doubledownCounter;
     Counter<int>* _splitCounter;
-    Counter<bool>* _surrenderCounter;
 };

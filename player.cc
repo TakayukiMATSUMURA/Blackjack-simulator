@@ -33,7 +33,6 @@ Player::Player(int bankroll, IStrategy* strategy) {
     _insuranceCounter = new Counter<bool>();
     _doubledownCounter = new Counter<std::string>();
     _splitCounter = new Counter<int>();
-    _surrenderCounter = new Counter<bool>();
 }
 
 Player::~Player() {
@@ -44,7 +43,6 @@ Player::~Player() {
     delete _insuranceCounter;
     delete _doubledownCounter;
     delete _splitCounter;
-    delete _surrenderCounter;
 }
 
 void Player::bet(int unit) {
@@ -164,8 +162,6 @@ void Player::doAction() {
                 std::cout << "hand:" << currentHand->toString() << std::endl;
             }
         }
-        
-        _surrenderCounter->count(action == Surrender);
     }
 }
 
@@ -275,8 +271,7 @@ float Player::expectedValue() const {
 std::string Player::toString() const {
     std::string result = "############# Player ##############\n";
     result += "Result\n" + _resultCounter->toStringInDescendingOrder() + "\n\n";
-    result += "Insurance accuracy\n" + _insuranceCounter->getStringPercentageOf(true) + "\n";
-    result += "Surrender\n" + _surrenderCounter->getStringPercentageOf(true) + "\n\n";
+    result += "Insurance accuracy\n" + _insuranceCounter->getStringPercentageOf(true) + "\n\n";
     result += "Double down\n" + _doubledownCounter->toStringInDescendingOrder() + "\n\n";
     result += "Hand distribution after Double down\n" + _handRankAfterDoubleDownCounter->toStringInDescendingOrder() + "\n\n";
     
