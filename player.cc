@@ -33,6 +33,8 @@ Player::Player(int bankroll, IStrategy* strategy) {
     _insuranceCounter = new Counter<bool>();
     _doubledownCounter = new Counter<std::string>();
     _splitCounter = new Counter<int>();
+    _cardCountOfHandCounter = new Counter<int>();
+    _diffBetweenShufflesCounter = new Counter<int>();
 }
 
 Player::~Player() {
@@ -43,6 +45,7 @@ Player::~Player() {
     delete _insuranceCounter;
     delete _doubledownCounter;
     delete _splitCounter;
+    delete _cardCountOfHandCounter;
 }
 
 void Player::bet(int unit) {
@@ -205,6 +208,8 @@ void Player::count(Card* card) {
 
 void Player::onShuffle() {
     _strategy->reset();
+    _diffBetweenShufflesCounter->count(_bankroll);
+    _bankroll = 0;
 }
 
 void Player::recordResult() {
@@ -217,6 +222,8 @@ void Player::recordResult() {
     auto win = "win";
     auto lose = "lose";
     for(const auto& hand : _hands) {
+        _cardCountOfHandCounter->count(hand->size());
+        
         if(!(dealer->hasBlackjack() && !hasBlackjack())) {
             _handRankCounter->count(hand->rankString());
         }                
@@ -276,7 +283,10 @@ std::string Player::toString() const {
     result += "Hand distribution after Double down\n" + _handRankAfterDoubleDownCounter->toStringInDescendingOrder() + "\n\n";
     
     result += "Split\n" + _splitCounter->toStringInDescendingOrder() + "\n\n";
+    result += "Cards per hand\n" + _cardCountOfHandCounter->toStringInDescendingOrder() + "\n\n";
     result += "Hand distribution\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
+    result += "Bankroll distribution(per shoe)\n" + _diffBetweenShufflesCounter->toStringInDescendingOrder() + "\n\n";
+    _diffBetweenShufflesCounter->saveDataTo("data/bankroll_distribution.csv");
     auto ev = expectedValue() > 0 ? "+" + std::to_string(expectedValue() * 100) :
         std::to_string(expectedValue() * 100);
     result += "Expected value\n" + ev + "%\n";

@@ -68,4 +68,6 @@ private:
     Counter<bool>* _insuranceCounter;
     Counter<std::string>* _doubledownCounter;
     Counter<int>* _splitCounter;
+    Counter<int>* _cardCountOfHandCounter;
+    Counter<int>* _diffBetweenShufflesCounter;
 };

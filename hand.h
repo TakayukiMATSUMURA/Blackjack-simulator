@@ -48,6 +48,8 @@ public:
     
     std::string rankString() const;
     std::string toString() const;
+
+    int size() const { return _cards.size(); }
     
 protected:
 
