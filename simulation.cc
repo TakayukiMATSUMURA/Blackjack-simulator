@@ -24,7 +24,7 @@ void Simulation::start(Player* player, int times) {
                 std::cout << "Game:" << gameCounter << " start" << std::endl;
             }
             
-            player->bet(10);
+            player->bet(2);
             
             dealer->dealHandTo(player);            
             dealer->dealHandToSelf();

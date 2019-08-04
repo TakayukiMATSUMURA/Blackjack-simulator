@@ -51,9 +51,8 @@ int main(int argc, char *argv[]) {
     }
     delete optionInterpreter;
     
-    int initialBankroll = 100;
     auto strategy = Config::instance()->getStrategy();
-    auto player = new Player(initialBankroll, strategy);
+    auto player = new Player(0, strategy);
     Simulation::start(player, Config::instance()->game);
 
     delete player;
