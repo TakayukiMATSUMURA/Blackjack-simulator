@@ -30,9 +30,6 @@ enum {
 class Card {
 public:
     ~Card() {}
-
-    const static std::string ranks[13];
-    const static std::string suits[4];
     
     static Card* getInstance(std::string);
     
