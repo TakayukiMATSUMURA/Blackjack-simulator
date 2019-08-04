@@ -37,7 +37,7 @@ public:
 
     void count(Card*) override {}
     
-    int getAction(Hand* hand, int dealersUpcardRank) const override {
+    Action getAction(Hand* hand, int dealersUpcardRank) const override {
         std::string dealersUpCard = (dealersUpcardRank == 1) ? "A" : std::to_string(dealersUpcardRank);
         std::string playersHand = "";
         if(hand->isPair()) {
@@ -59,25 +59,25 @@ public:
         
         if(result == "D") {
             if(hand->canDoubleDownOrSurrender()) {
-                return DoubleDown;
+                return Action::DoubleDown;
             }
             
-            return Hit;
+            return Action::Hit;
         }
         
-        if(result == "S") return Stand;
-        if(result == "P") return Split;
+        if(result == "S") return Action::Stand;
+        if(result == "P") return Action::Split;
         if(result == "PH") {
-            return Rule::instance()->DaS ? Split : Hit;
+            return Rule::instance()->DaS ? Action::Split : Action::Hit;
         }
         
         if(result == "R") {
             if(hand->canDoubleDownOrSurrender()) {
-                return Surrender;
+                return Action::Surrender;
             }
-            return Hit;
+            return Action::Hit;
         }
-        return Hit;
+        return Action::Hit;
     }
     
     bool takesInsurance() const override {

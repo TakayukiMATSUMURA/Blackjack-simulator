@@ -112,52 +112,51 @@ void Player::doAction() {
     int handCounter = 0;
     while(handCounter < _hands.size()) {
         auto currentHand = _hands[handCounter++];
-        int action = -1;
-        
+        Action action = Action::Invalid;
             
         if(Config::instance()->isDebugMode) {
             std::cout << "Player's hand:" << currentHand->toString() << std::endl;
         }
-        while(action != Stand && action != DoubleDown && action != Surrender && !currentHand->isBusted()) {
+        while(action != Action::Stand && action != Action::DoubleDown && action != Action::Surrender && !currentHand->isBusted()) {
             action = _strategy->getAction(currentHand, dealer->upCardRank());
             if(_hands.size() > 2) {
-                if(action == Surrender) action = Hit;
-                if(action == DoubleDown && !Rule::instance()->DaS) action = Hit;
+                if(action == Action::Surrender) action = Action::Hit;
+                if(action == Action::DoubleDown && !Rule::instance()->DaS) action = Action::Hit;
             }
 
             if(Config::instance()->isDebugMode && !currentHand->isBusted()) {
-                auto actionString = action == Hit ? "Hit" :
-                    action == Surrender ? "Surrender" :
-                    action == Split ? "Split" :
-                    action == DoubleDown ? "Double down": "Stand";
+                auto actionString = action == Action::Hit ? "Hit" :
+                    action == Action::Surrender ? "Surrender" :
+                    action == Action::Split ? "Split" :
+                    action == Action::DoubleDown ? "Double down": "Stand";
                 if(!currentHand->isBusted()) {
                     std::cout << "action:" << actionString << std::endl;
                 }
             }
             
-            if(action == Hit) {
+            if(action == Action::Hit) {
                 currentHand->add(dealer->deal());
             }
-            else if(action == DoubleDown) {
+            else if(action == Action::DoubleDown) {
                 _bankroll -= currentHand->bet();
                 _totalBetAmount += currentHand->bet();
                 
                 currentHand->doubleDownWith(dealer->deal());
                 _handRankAfterDoubleDownCounter->count(currentHand->rankString());
             }
-            else if(action == Split) {
+            else if(action == Action::Split) {
                 _bankroll -= currentHand->bet();
                 _totalBetAmount += currentHand->bet();
                 
                 if(currentHand->isPairOf(A)) {
-                    action = Stand;
+                    action = Action::Stand;
                     handCounter++;
                 }
                 
                 auto newHand = currentHand->split();
                 _hands.push_back(newHand);
             }
-            else if(action == Surrender) {
+            else if(action == Action::Surrender) {
                 currentHand->surrender();
             }
             

@@ -30,7 +30,7 @@ public:
     virtual ~KOSmart() {
     }
     
-    int getAction(Hand* hand, int dealersUpcardRank) const override {
+    Action getAction(Hand* hand, int dealersUpcardRank) const override {
         if(!hand->isSoft()) {
             std::string dealersUpCard = (dealersUpcardRank == 1) ? "A" : std::to_string(dealersUpcardRank);
             std::string playersHand = (hand->rank() <= 8) ? "8" :
@@ -40,30 +40,30 @@ public:
             
             if(hand->rank() >= 14) {
                 if(result == "A" && _runningCount >= 4) {
-                    return Surrender;
+                    return Action::Surrender;
                 }
             }
             else if(hand->rank() >= 12) {
-                if(result == "A") return _runningCount >= 4 ? Stand : Hit;
-                if(result == "B") return _runningCount >= initialRunningCount ? Stand : Hit;
+                if(result == "A") return _runningCount >= 4 ? Action::Stand : Action::Hit;
+                if(result == "B") return _runningCount >= initialRunningCount ? Action::Stand : Action::Hit;
                 if(result == "C") {
                     if(Rule::instance()->deck == 1) {
-                        return _runningCount >= 0 ? Stand : Hit;
+                        return _runningCount >= 0 ? Action::Stand : Action::Hit;
                     }
                     if(Rule::instance()->deck == 2) {
-                        return _runningCount >= -4 ? Stand : Hit;
+                        return _runningCount >= -4 ? Action::Stand : Action::Hit;
                     }
                 }
             }
             else {
-                if(result == "A") return _runningCount >= 4 ? DoubleDown : Hit;
-                if(result == "B") return _runningCount >= initialRunningCount ? DoubleDown : Hit;
+                if(result == "A") return _runningCount >= 4 ? Action::DoubleDown : Action::Hit;
+                if(result == "B") return _runningCount >= initialRunningCount ? Action::DoubleDown : Action::Hit;
                 if(result == "C") {
                     if(Rule::instance()->deck == 1) {
-                        return _runningCount >= 0 ? DoubleDown : Hit;
+                        return _runningCount >= 0 ? Action::DoubleDown : Action::Hit;
                     }
                     if(Rule::instance()->deck == 2) {
-                        return _runningCount >= -4 ? DoubleDown : Hit;
+                        return _runningCount >= -4 ? Action::DoubleDown : Action::Hit;
                     }
                 }
             }
