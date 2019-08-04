@@ -8,7 +8,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
 
 run: $(TARGET)
-	./$(TARGET) -g 10000
+	./$(TARGET)
 
 clean:
 	rm -f $(TARGET) $(OBJS)
