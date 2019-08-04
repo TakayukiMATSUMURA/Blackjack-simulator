@@ -29,7 +29,7 @@ void Simulation::start(Player* player, int times) {
             dealer->dealHandTo(player);            
             dealer->dealHandToSelf();
             
-            if(dealer->hasAce()) {
+            if(dealer->has(A)) {
                 player->doInsuranceOrNot();
             }
             if(dealer->hasBlackjack()) {

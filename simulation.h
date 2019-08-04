@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "./card.h"
 #include "./player.h"
 #include "./dealer.h"
 

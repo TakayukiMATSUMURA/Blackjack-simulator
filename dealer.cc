@@ -98,8 +98,8 @@ Card* Dealer::deal() {
     return card;
 }
 
-bool Dealer::hasAce() const {
-    return _upCard->rank() == A;
+bool Dealer::has(int rank) const {
+    return _upCard->rank() == rank;
 }
 
 bool Dealer::hasBlackjack() const {

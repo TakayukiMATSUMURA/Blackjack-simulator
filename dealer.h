@@ -45,7 +45,7 @@ public:
     void dealHandTo(Player*);
     void dealHandToSelf();
     Card* deal();
-    bool hasAce() const;
+    bool has(int) const;
     bool hasBlackjack() const;
     bool isBusted() const;
     void recordResult();
