@@ -42,6 +42,11 @@ int main(int argc, char *argv[]) {
                                Config::parameters.betSpread = std::stoi(arg);
                            }
     );
+    optionInterpreter->add("n", " [n:int]:num of sample average(default:1)",
+                           [&](std::string arg){
+                               Config::parameters.N = std::stoi(arg);
+                           }
+    );
     optionInterpreter->analize(argc, argv);
     
     if(Config::parameters.game <= 0) {

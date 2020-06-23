@@ -25,7 +25,8 @@ Config::Config(Parameters params) : isDebugMode(params.isDebugMode),
                                     displaysDealerDetails(params.displaysDealerDetails),
                                     strategy(params.strategy),
                                     betSpread(params.betSpread),
-                                    game(params.game)
+                                    game(params.game),
+                                    N(params.N)
 {
     std::cout << "Config" << std::endl;
     if(isDebugMode) {
@@ -36,6 +37,7 @@ Config::Config(Parameters params) : isDebugMode(params.isDebugMode),
         std::cout << "bet spread:" << betSpread << std::endl;
     }
     std::cout << "game:" << game << std::endl;
+    std::cout << "num for sample average:" << N << std::endl;
     std::cout << std::endl;
 }
 

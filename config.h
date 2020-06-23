@@ -42,6 +42,7 @@ public:
     const std::string strategy;
     const int betSpread;
     const int game;
+    const int N;
     
     IStrategy* getStrategy();
     
@@ -51,6 +52,7 @@ public:
         std::string strategy = "basic";
         int betSpread = 1;
         int game = 0;
+        int N = 1;
     };
     
     static Parameters parameters;

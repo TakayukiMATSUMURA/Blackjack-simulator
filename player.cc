@@ -207,7 +207,15 @@ void Player::count(Card* card) {
 
 void Player::onShuffle() {
     _strategy->reset();
-    _diffBetweenShufflesCounter->count(_bankroll);
+    _buffer.push_back(_bankroll);
+    
+    if(_buffer.size() == Config::instance()->N){
+        float sum = std::accumulate(_buffer.begin(), _buffer.end(), 0);
+        auto average = std::round(sum / Config::instance()->N);
+        _diffBetweenShufflesCounter->count(average);
+        _buffer.clear();
+    }
+    
     _bankroll = 0;
 }
 
