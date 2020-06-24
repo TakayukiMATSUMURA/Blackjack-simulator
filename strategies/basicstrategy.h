@@ -41,12 +41,7 @@ public:
         std::string dealersUpCard = (dealersUpcardRank == 1) ? "A" : std::to_string(dealersUpcardRank);
         std::string playersHand = "";
         if(hand->isPair()) {
-            if(hand->isPairOf(A)) {
-                playersHand = "AA";
-            }
-            else {
-                playersHand = std::to_string(hand->rank() / 2) + std::to_string(hand->rank() / 2);
-            }
+            playersHand = hand->isPairOf(A) ? "AA" : std::to_string(hand->rank() / 2) + std::to_string(hand->rank() / 2);
         }
         else if(hand->isSoft() && hand->rank() <= 19) {
             playersHand = "A" + std::to_string(hand->rank() - 11);
@@ -58,11 +53,7 @@ public:
         auto result = _csvreader->getContent(playersHand, dealersUpCard);
         
         if(result == "D") {
-            if(hand->canDoubleDownOrSurrender()) {
-                return Action::DoubleDown;
-            }
-            
-            return Action::Hit;
+            return hand->canDoubleDownOrSurrender() ? Action::DoubleDown : Action::Hit;
         }
         
         if(result == "S") return Action::Stand;
@@ -72,11 +63,9 @@ public:
         }
         
         if(result == "R") {
-            if(hand->canDoubleDownOrSurrender()) {
-                return Action::Surrender;
-            }
-            return Action::Hit;
+            return hand->canDoubleDownOrSurrender() ? Action::Surrender : Action::Hit;
         }
+        
         return Action::Hit;
     }
     

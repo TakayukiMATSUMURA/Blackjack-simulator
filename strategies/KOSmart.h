@@ -68,7 +68,7 @@ public:
                 }
             }
         }
-        return BasicStrategy::getAction(hand, dealersUpcardRank);
+        return _basicStrategy->getAction(hand, dealersUpcardRank);
     }
     
     bool takesInsurance() const override {
