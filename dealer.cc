@@ -134,10 +134,6 @@ int Dealer::upCardRank() const {
     return _upCard->rank();
 }
 
-int Dealer::handRank() const {
-    return _hand->rank();
-}
-
 void Dealer::add(Player* counter) {
     _counter = counter;
 }

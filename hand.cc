@@ -107,7 +107,6 @@ Hand* Hand::split() {
 
 void Hand::surrender() {
     _isSurrendered = true;
-    _bet /= 2;
 }
 
 bool Hand::isSurrendered() const {
@@ -116,6 +115,20 @@ bool Hand::isSurrendered() const {
 
 int Hand::bet() const {
     return _bet;
+}
+
+bool Hand::loses(Hand* dealersHand) const {
+    if(isBusted() || isSurrendered() || (dealersHand->isBlackjack() && !isBlackjack())) {
+        return true;
+    }
+    return !isBusted() && !dealersHand->isBusted() && rank() < dealersHand->rank();
+}
+
+bool Hand::winsAgainst(Hand* dealersHand) const {
+    if(loses(dealersHand)) {
+        return false;
+    }
+    return dealersHand->isBusted() || (!isBusted() && rank() > dealersHand->rank());
 }
 
 std::string Hand::rankString() const {

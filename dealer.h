@@ -52,7 +52,7 @@ public:
     void doAction();
 
     int upCardRank() const;
-    int handRank() const;
+    Hand* hand() const { return _hand; }
     
     void pay(Player*, float);
     

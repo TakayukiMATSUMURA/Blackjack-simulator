@@ -129,35 +129,38 @@ void Player::doAction() {
                     action == Action::Surrender ? "Surrender" :
                     action == Action::Split ? "Split" :
                     action == Action::DoubleDown ? "Double down": "Stand";
-                if(!currentHand->isBusted()) {
-                    std::cout << "action:" << actionString << std::endl;
+                std::cout << "action:" << actionString << std::endl;
+            }
+
+            switch(action) {
+                case Action::Hit:
+                    currentHand->add(dealer->deal());
+                    break;
+                case Action::DoubleDown:
+                    _bankroll -= currentHand->bet();
+                    _totalBetAmount += currentHand->bet();
+                    
+                    currentHand->doubleDownWith(dealer->deal());
+                    _handRankAfterDoubleDownCounter->count(currentHand->rankString());
+                    break;
+                case Action::Split: {
+                    _bankroll -= currentHand->bet();
+                    _totalBetAmount += currentHand->bet();
+                    
+                    if(currentHand->isPairOf(A)) {
+                        action = Action::Stand;
+                        handCounter++;
+                    }
+                    
+                    auto newHand = currentHand->split();
+                    _hands.push_back(newHand);
+                    break;
                 }
-            }
-            
-            if(action == Action::Hit) {
-                currentHand->add(dealer->deal());
-            }
-            else if(action == Action::DoubleDown) {
-                _bankroll -= currentHand->bet();
-                _totalBetAmount += currentHand->bet();
-                
-                currentHand->doubleDownWith(dealer->deal());
-                _handRankAfterDoubleDownCounter->count(currentHand->rankString());
-            }
-            else if(action == Action::Split) {
-                _bankroll -= currentHand->bet();
-                _totalBetAmount += currentHand->bet();
-                
-                if(currentHand->isPairOf(A)) {
-                    action = Action::Stand;
-                    handCounter++;
-                }
-                
-                auto newHand = currentHand->split();
-                _hands.push_back(newHand);
-            }
-            else if(action == Action::Surrender) {
-                currentHand->surrender();
+                case Action::Surrender:
+                    currentHand->surrender();
+                    break;
+                default:
+                    break;
             }
             
             if(Config::instance()->isDebugMode) {
@@ -181,17 +184,19 @@ void Player::adjust() {
         getPrize(2.5, _hands[0]);
         return;
     }
-
+    
     for(const auto& hand : _hands) {
         if(hand->isBusted()) continue;
-
-        if(hand->isSurrendered()) {
-            getPrize(1, hand);
-        }
-        else if(hand->rank() > dealer->handRank() || dealer->isBusted()) {
+        
+        if(hand->winsAgainst(dealer->hand())) {
             getPrize(2, hand);
         }
-        else if(hand->rank() == dealer->handRank()) {
+        else if(hand->loses(dealer->hand())) {
+            if(hand->isSurrendered()) {
+                getPrize(0.5, hand);
+            }
+        }
+        else {
             getPrize(1, hand);
         }
     }
@@ -225,52 +230,25 @@ void Player::recordResult() {
     }
     
     auto dealer = Dealer::instance();
-    auto tie = "tie";
-    auto win = "win";
-    auto lose = "lose";
     for(const auto& hand : _hands) {
         _cardCountOfHandCounter->count(hand->size());
         
-        if(!(dealer->hasBlackjack() && !hasBlackjack())) {
+        if(!dealer->hasBlackjack()) {
             _handRankCounter->count(hand->rankString());
-        }                
-        
-        if(dealer->hasBlackjack()) {
-            if(hasBlackjack()) {
-                _resultCounter->count(tie);
-            }
-            else {
-                _resultCounter->count(lose);
-            }
         }
-        else if(hand->isBusted()) {
-            _resultCounter->count(lose);
+        std::string result;
+        if(hand->loses(dealer->hand())) {
+            result = "lose";
         }
-        else if(hasBlackjack()) {
-            _resultCounter->count(win);
-        }
-        else if(hand->isSurrendered()) {
-            _resultCounter->count(lose);
+        else if(hand->winsAgainst(dealer->hand())) {
+            result = "win";
         }
         else {
-            if(hand->rank() > dealer->handRank() || dealer->isBusted()) {
-                _resultCounter->count(win);
-                if(hand->isDoubledown()) {
-                    _doubledownCounter->count(win);
-                }
-            }
-            else if(hand->rank() < dealer->handRank()) {
-                _resultCounter->count(lose);
-                if(hand->isDoubledown()) {
-                    _doubledownCounter->count(lose);
-                }
-            }
-            else {
-                _resultCounter->count(tie);
-                if(hand->isDoubledown()) {
-                    _doubledownCounter->count(tie);
-                }
-            }
+            result = "tie";
+        }
+        _resultCounter->count(result);
+        if(hand->isDoubledown()) {
+            _doubledownCounter->count(result);
         }
         
         delete hand;

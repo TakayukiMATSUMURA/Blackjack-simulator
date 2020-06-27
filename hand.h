@@ -46,6 +46,9 @@ public:
     bool isSurrendered() const;
     int bet() const;
     
+    bool winsAgainst(Hand*) const;
+    bool loses(Hand*) const;
+    
     std::string rankString() const;
     std::string toString() const;
 
