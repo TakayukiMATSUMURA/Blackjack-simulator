@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     
     auto strategy = Config::instance()->getStrategy();
     auto player = new Player(0, strategy);
-    Simulation::start(player, Config::instance()->game);
+    Simulation::start(player);
 
     delete player;
     return 0;

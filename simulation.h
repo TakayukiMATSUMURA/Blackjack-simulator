@@ -18,7 +18,7 @@ public:
     Simulation();
     virtual ~Simulation();
                                        
-    static void start(Player*, int);
+    static void start(Player*);
     
 protected:
 

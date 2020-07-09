@@ -31,8 +31,9 @@
 #include "./lib/singleton.h"
 #include "./lib/counter.h"
 
-class Dealer : public Singleton<Dealer> {
+class Dealer {
 public:
+    Dealer();
     virtual ~Dealer();
 
     static Dealer* create() {
@@ -63,8 +64,6 @@ public:
 protected:
 
 private:
-    Dealer();
-    
     std::vector<Card*> _cards;
     
     Card* _upCard;

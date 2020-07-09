@@ -96,12 +96,12 @@ void Hand::doubleDownWith(Card* card) {
     _bet *= 2;
 }
 
-Hand* Hand::split() {
+Hand* Hand::split(Card* card0, Card* card1) {
     auto card = _cards.back();
     _cards.pop_back();
     auto newHand = new Hand(card, bet());
-    add(Dealer::instance()->deal());
-    newHand->add(Dealer::instance()->deal());
+    add(card0);
+    newHand->add(card1);
     return newHand;
 }
 

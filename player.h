@@ -27,6 +27,7 @@
 #include "./config.h"
 #include "./strategies/istrategy.h"
 #include "./lib/counter.h"
+class Dealer;
 
 class Player {
 public:
@@ -37,16 +38,16 @@ public:
     int betAmount() const;
     void receive(std::vector<Card*>&);
     void getPrize(float, Hand* = nullptr);
-    void doInsuranceOrNot();
+    void doInsuranceOrNot(Dealer*);
     bool takesInsurance() const;
-    void doAction();
-    void adjust();
+    void doAction(Dealer*);
+    void adjust(Hand*);
     bool hasBlackjack() const;
     
     void count(Card*);
     void onShuffle();
     
-    void recordResult();
+    void recordResult(Dealer*);
     
     float expectedValue() const;
     std::string toString() const;

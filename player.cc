@@ -88,14 +88,14 @@ void Player::getPrize(float rate, Hand* hand) {
     }
 }
 
-void Player::doInsuranceOrNot() {
+void Player::doInsuranceOrNot(Dealer* dealer) {
     if(!_strategy->takesInsurance()) return;
     
     _takesInsurance = true;
     _bankroll -= _betAmount / 2;
     _totalBetAmount += _betAmount / 2;
     
-    _insuranceCounter->count(Dealer::instance()->hasBlackjack());
+    _insuranceCounter->count(dealer->hasBlackjack());
     if(Config::instance()->isDebugMode) {
         std::cout << "Player takes insurance(bet:" << (_betAmount / 2) << ")" << std::endl;
     }
@@ -105,10 +105,8 @@ bool Player::takesInsurance() const {
     return _takesInsurance;
 }
 
-void Player::doAction() {
+void Player::doAction(Dealer* dealer) {
     if(hasBlackjack()) return;
-    
-    auto dealer = Dealer::instance();
     int handCounter = 0;
     while(handCounter < _hands.size()) {
         auto currentHand = _hands[handCounter++];
@@ -152,7 +150,7 @@ void Player::doAction() {
                         handCounter++;
                     }
                     
-                    auto newHand = currentHand->split();
+                    auto newHand = currentHand->split(dealer->deal(), dealer->deal());
                     _hands.push_back(newHand);
                     break;
                 }
@@ -170,9 +168,8 @@ void Player::doAction() {
     }
 }
 
-void Player::adjust() {
-    auto dealer = Dealer::instance();
-    if(dealer->hasBlackjack()) {
+void Player::adjust(Hand* dealersHand) {
+    if(dealersHand->isBlackjack()) {
         if(hasBlackjack()) {
             getPrize(1, _hands[0]);
         }
@@ -188,10 +185,10 @@ void Player::adjust() {
     for(const auto& hand : _hands) {
         if(hand->isBusted()) continue;
         
-        if(hand->winsAgainst(dealer->hand())) {
+        if(hand->winsAgainst(dealersHand)) {
             getPrize(2, hand);
         }
-        else if(hand->loses(dealer->hand())) {
+        else if(hand->loses(dealersHand)) {
             if(hand->isSurrendered()) {
                 getPrize(0.5, hand);
             }
@@ -224,12 +221,11 @@ void Player::onShuffle() {
     _bankroll = 0;
 }
 
-void Player::recordResult() {
+void Player::recordResult(Dealer* dealer) {
     if(_hands.size() > 1) {
         _splitCounter->count(_hands.size() - 1);
     }
     
-    auto dealer = Dealer::instance();
     for(const auto& hand : _hands) {
         _cardCountOfHandCounter->count(hand->size());
         

@@ -41,7 +41,7 @@ public:
     bool isDoubledown() const;
     bool canDoubleDownOrSurrender() const;
     void doubleDownWith(Card*);
-    Hand* split();
+    Hand* split(Card*, Card*);
     void surrender();
     bool isSurrendered() const;
     int bet() const;

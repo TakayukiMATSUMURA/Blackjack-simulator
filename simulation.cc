@@ -9,8 +9,8 @@
 
 #include "simulation.h"
 
-void Simulation::start(Player* player, int times) {
-    auto dealer = Dealer::instance();
+void Simulation::start(Player* player) {
+    auto dealer = new Dealer();
     dealer->add(player);
     
     int gameCounter = 0;
@@ -30,7 +30,7 @@ void Simulation::start(Player* player, int times) {
             dealer->dealHandToSelf();
             
             if(dealer->has(A)) {
-                player->doInsuranceOrNot();
+                player->doInsuranceOrNot(dealer);
             }
             if(dealer->hasBlackjack()) {
                 if(player->takesInsurance()) {
@@ -38,13 +38,13 @@ void Simulation::start(Player* player, int times) {
                 }
             }
             else {
-                player->doAction();
+                player->doAction(dealer);
             }
             dealer->doAction();
             
-            player->adjust();
+            player->adjust(dealer->hand());
             
-            player->recordResult();
+            player->recordResult(dealer);
             dealer->recordResult();
             if(Config::instance()->isDebugMode) {
                 std::cout << std::endl;
@@ -61,5 +61,6 @@ void Simulation::start(Player* player, int times) {
     std::cout << player->toString() << std::endl;
     std::cout << std::endl;
     std::cout << dealer->toString() << std::endl;
-    
+
+    delete dealer;
 }
