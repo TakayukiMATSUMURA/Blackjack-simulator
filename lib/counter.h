@@ -36,6 +36,10 @@ public:
         
         _histogram[index]++;
     }
+
+    void erase(IndexType index) {
+        _histogram.erase(index);
+    }
     
     double getRateOf(IndexType index) const {
         unsigned long long int sum = 0;

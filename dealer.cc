@@ -145,11 +145,23 @@ std::string Dealer::toString() const {
     }
     else {
         for(int i = 0; i < 10; i++) {
-            result += "Hand distribution(upcard:" + (i == 9 ? "A" : std::to_string(i + 2)) + ")\n";
+            auto upCard = (i == 9 ? "A" : std::to_string(i + 2));
+            result += "Hand distribution(upcard:" + upCard + ")\n";
             result += _handRankCounterForEachRanks[i]->toStringInDescendingOrder() + "\n\n";
         }
         
-        result += "Hand distribution(all)\n" + _handRankCounter->toStringInDescendingOrder();
+        result += "Hand distribution(all)\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
+        
+        result += "Hand distribution except for BJ\n";
+        for(int i = 0; i < 2; i++) {
+            auto upCard = i == 0 ? std::to_string(10) : "A";
+            result += "upcard:" + upCard + "\n";
+            auto index = i + 8;
+            _handRankCounterForEachRanks[index]->erase("BJ");
+            result += _handRankCounterForEachRanks[index]->toStringInDescendingOrder() + "\n\n";
+        }
+        _handRankCounter->erase("BJ");
+        result += "all\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
     }
     return result;
 }
