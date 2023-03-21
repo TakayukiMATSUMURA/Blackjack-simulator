@@ -117,7 +117,7 @@ bool Hand::loses(Hand* dealersHand) const {
     if(isBusted() || isSurrendered() || (dealersHand->isBlackjack() && !isBlackjack())) {
         return true;
     }
-    return !isBusted() && !dealersHand->isBusted() && rank() < dealersHand->rank();
+    return !dealersHand->isBusted() && rank() < dealersHand->rank();
 }
 
 bool Hand::winsAgainst(Hand* dealersHand) const {
