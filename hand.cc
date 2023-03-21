@@ -56,13 +56,7 @@ bool Hand::isBusted() const {
 }
 
 bool Hand::isSoft() const {
-    bool hasAce = false;
-    for(const auto& card : _cards) {
-        if(card->rank == A) {
-            hasAce = true;
-            break;
-        }
-    }
+    auto hasAce = std::any_of(std::begin(_cards), std::end(_cards), [&](const Card* card) { return card->rank == A;});
     return hasAce && sum() <= 11;
 }
 
