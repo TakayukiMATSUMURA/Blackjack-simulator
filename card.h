@@ -36,12 +36,10 @@ public:
     static std::vector<Card*> getDeck(int = 1);
     
     std::string toString() const { return _str; }
-    int rank() const { return _rank; }
-    int suit() const {return _suit; }
-    
+    const int rank;
+    const int suit;
+
 private:
     Card(std::string);
-    std::string _str;
-    int _rank;
-    int _suit;
+    const std::string _str;
 };

@@ -99,7 +99,7 @@ Card* Dealer::deal() {
 }
 
 bool Dealer::has(int rank) const {
-    return _upCard->rank() == rank;
+    return _upCard->rank == rank;
 }
 
 bool Dealer::hasBlackjack() const {
@@ -112,7 +112,7 @@ bool Dealer::isBusted() const {
 
 void Dealer::recordResult() {
     _handRankCounter->count(_hand->rankString());
-    auto index = _upCard->rank() == A ? 9 : _upCard->rank() - 2;
+    auto index = _upCard->rank == A ? 9 : _upCard->rank - 2;
     _handRankCounterForEachRanks[index]->count(_hand->rankString());
 }
 
@@ -131,7 +131,7 @@ void Dealer::doAction() {
 }
 
 int Dealer::upCardRank() const {
-    return _upCard->rank();
+    return _upCard->rank;
 }
 
 void Dealer::add(Player* counter) {

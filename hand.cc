@@ -51,8 +51,8 @@ void Hand::add(Card* card) {
 
 bool Hand::isBlackjack() const {
     return _cards.size() == 2 &&
-        ((_cards[0]->rank() == A && _cards[1]->rank() == T) ||
-         (_cards[0]->rank() == T && _cards[1]->rank() == A));
+        ((_cards[0]->rank == A && _cards[1]->rank == T) ||
+         (_cards[0]->rank == T && _cards[1]->rank == A));
 }
 
 bool Hand::isBusted() const {
@@ -62,7 +62,7 @@ bool Hand::isBusted() const {
 bool Hand::isSoft() const {
     bool hasAce = false;
     for(const auto& card : _cards) {
-        if(card->rank() == A) {
+        if(card->rank == A) {
             hasAce = true;
             break;
         }
@@ -75,11 +75,11 @@ bool Hand::isSoft17() const {
 }
 
 bool Hand::isPair() const {
-    return _cards.size() == 2 && _cards[0]->rank() == _cards[1]->rank();
+    return _cards.size() == 2 && _cards[0]->rank == _cards[1]->rank;
 }
 
 bool Hand::isPairOf(int rank) const {
-    return isPair() && _cards[0]->rank() == rank;
+    return isPair() && _cards[0]->rank == rank;
 }
 
 bool Hand::isDoubledown() const {

@@ -39,7 +39,7 @@ public:
     }
     
     void count(Card* card) override {
-        auto rank = card->rank();
+        auto rank = card->rank;
         if(rank == A || rank == T) _runningCount--;
         else if(rank >= 2 && rank <= 7) _runningCount++;
     }
