@@ -52,8 +52,7 @@ void Dealer::shuffle() {
 }
 
 bool Dealer::needsShuffle() const {
-    return _cards.size() <=
-        Rule::instance()->deck * 52 * (100 - Rule::instance()->penetration) / 100;
+    return _cards.size() <= Rule::instance()->deck * 52 * (100.0 - Rule::instance()->penetration) / 100;
 }
 
 void Dealer::dealHandTo(Player* player) {
@@ -67,7 +66,7 @@ void Dealer::dealHandTo(Player* player) {
 
 void Dealer::dealHandToSelf() {
     delete _hand;
-    
+
     std::vector<Card*> cards;
     _upCard = deal();
     cards.push_back(_upCard);
