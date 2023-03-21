@@ -20,10 +20,9 @@
 #include "./card.h"
 
 
-Card::Card(std::string arg) : 
-        rank(arg[0] == 'A' ? 1 : arg[0] == 'T' ? 10 : arg[0] == 'J' ? 10 : arg[0] == 'Q' ? 10 : arg[0] == 'K' ? 10 : arg[0] - '0'),
-        suit(arg[1] == 'c' ? 0 : arg[1] == 'd' ? 1 : arg[1] == 'h' ? 2 : arg[2] == 's' ? 3 : -1),
-        _str(arg) {
+Card::Card(std::string arg) : rank(arg[0] == 'A' ? 1 : arg[0] == 'T' ? 10 : arg[0] == 'J' ? 10 : arg[0] == 'Q' ? 10 : arg[0] == 'K' ? 10 : arg[0] - '0'),
+                            suit(arg[1] == 'c' ? 0 : arg[1] == 'd' ? 1 : arg[1] == 'h' ? 2 : arg[2] == 's' ? 3 : -1),
+                            _str(arg) {
 }
 
 Card* Card::getInstance(std::string str) {
