@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <string>
+#include <numeric>
 
 #include "./card.h"
 

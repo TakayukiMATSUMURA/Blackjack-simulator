@@ -151,9 +151,5 @@ std::string Hand::toString() const {
 }
 
 int Hand::sum() const {
-    int result = 0;
-    for(const auto& card : _cards) {
-        result += card->rank();
-    }
-    return result;
+    return std::accumulate(std::begin(_cards), std::end(_cards), 0, [](int sum, Card* card) { return sum + card->rank; });
 }
