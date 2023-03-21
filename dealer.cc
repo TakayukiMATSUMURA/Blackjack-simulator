@@ -121,7 +121,7 @@ void Dealer::doAction() {
         _counter->count(_holeCard);
     }
     
-    while(_hand->rank() < 17 || (_hand->isSoft17() && Rule::instance()->hitSoft17)) {
+    while(_hand->rank() < 17 || (_hand->isSoft(17) && Rule::instance()->hitSoft17)) {
         _hand->add(deal());
     }
 

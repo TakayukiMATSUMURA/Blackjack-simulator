@@ -36,7 +36,7 @@ public:
     bool isBlackjack() const;
     bool isBusted() const;
     bool isSoft() const;
-    bool isSoft17() const;
+    bool isSoft(int) const;
     bool isPair() const;
     bool isPairOf(int) const;
     bool isDoubledown() const;

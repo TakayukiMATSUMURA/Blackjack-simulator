@@ -60,8 +60,8 @@ bool Hand::isSoft() const {
     return hasAce && sum() <= 11;
 }
 
-bool Hand::isSoft17() const {
-    return isSoft() && rank() == 17;
+bool Hand::isSoft(int r) const {
+    return isSoft() && rank() == r;
 }
 
 bool Hand::isPair() const {
