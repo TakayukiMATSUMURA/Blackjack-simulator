@@ -31,10 +31,7 @@ Dealer::Dealer() {
 }
 
 Dealer::~Dealer() {
-    if(_hand != nullptr) {
-        delete _hand;
-    }
-    
+    delete _hand;
     delete _handRankCounter;
 
     for(const auto& counter : _handRankCounterForEachRanks) {
@@ -69,9 +66,7 @@ void Dealer::dealHandTo(Player* player) {
 }
 
 void Dealer::dealHandToSelf() {
-    if(_hand != nullptr) {
-        delete _hand;
-    }
+    delete _hand;
     
     std::vector<Card*> cards;
     _upCard = deal();
