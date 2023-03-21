@@ -38,11 +38,7 @@ Hand::~Hand() {
 
 int Hand::rank() const {
     if(isBlackjack()) return 21;
-
-    int result = sum();
-    if(isSoft()) result += 10;
-    
-    return result;
+    return sum() + (isSoft() ? 10 : 0);
 }
 
 void Hand::add(Card* card) {
