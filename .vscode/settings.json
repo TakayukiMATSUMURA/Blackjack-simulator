@@ -4,6 +4,11 @@
             "cwd": "/Users/takayuki/tmp/blackjack-simulator",
             "binaryPath": "/Users/takayuki/tmp/blackjack-simulator/blackjack-simulator",
             "binaryArgs": []
+        },
+        {
+            "cwd": "/Users/takayuki/tmp/blackjack-simulator/bin",
+            "binaryPath": "/Users/takayuki/tmp/blackjack-simulator/bin/blackjack-simulator",
+            "binaryArgs": []
         }
     ],
     "files.associations": {
