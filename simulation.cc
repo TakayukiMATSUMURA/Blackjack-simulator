@@ -1,12 +1,3 @@
-/**
- * simulation.cc
- *
- * Copyright (c) 2019 Takayuki Matsumura
- *
- * This software is released under the MIT License.
- * http://opensource.org/licenses/mit-license.php
- */
-
 #include "./include/simulation.h"
 
 Simulation::Simulation(Dealer* dealer, Player* player) {
