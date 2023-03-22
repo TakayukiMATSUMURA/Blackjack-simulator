@@ -31,21 +31,21 @@
 class Config : public Singleton<Config> {
 public:
     virtual ~Config();
-    
+
     static Config* create() {
         static Config instance(parameters);
         return &instance;
     }
-    
+
     const bool isDebugMode;
     const bool displaysDealerDetails;
     const std::string strategy;
     const int betSpread;
     const int game;
     const int N;
-    
+
     IStrategy* getStrategy();
-    
+
     struct Parameters {
         bool isDebugMode = false;
         bool displaysDealerDetails = false;
@@ -54,9 +54,8 @@ public:
         int game = 0;
         int N = 1;
     };
-    
+
     static Parameters parameters;
-protected:
 
 private:
     Config(Parameters);

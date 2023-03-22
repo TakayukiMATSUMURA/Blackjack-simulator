@@ -30,7 +30,7 @@ public:
     Hand(Card*, int = 0);
     Hand(std::vector<Card*>&, int = 0);
     virtual ~Hand();
-    
+
     int rank() const;
     void add(Card*);
     bool isBlackjack() const;
@@ -46,25 +46,21 @@ public:
     void surrender();
     bool isSurrendered() const;
     int bet() const;
-    
+
     bool winsAgainst(Hand*) const;
     bool loses(Hand*) const;
-    
+
     std::string rankString() const;
     std::string toString() const;
 
     int size() const { return _cards.size(); }
-    
-protected:
 
 private:
     int sum() const;
-    
+
     std::vector<Card*> _cards;
     int _bet;
-    
+
     bool _isDoubledown;
     bool _isSurrendered;
 };
-
-

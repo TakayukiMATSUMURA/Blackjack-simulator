@@ -17,11 +17,5 @@ class Simulation {
 public:
     Simulation();
     virtual ~Simulation();
-                                       
     static void start(Player*);
-    
-protected:
-
-private:
-
 };

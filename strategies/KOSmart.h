@@ -29,15 +29,15 @@ public:
     }
     virtual ~KOSmart() {
     }
-    
+
     Action getAction(Hand* hand, int dealersUpcardRank) const override {
         if(!hand->isSoft()) {
             std::string dealersUpCard = (dealersUpcardRank == 1) ? "A" : std::to_string(dealersUpcardRank);
             std::string playersHand = (hand->rank() <= 8) ? "8" :
                 (hand->rank() >= 17) ? "17" : std::to_string(hand->rank());
-            
+
             auto result = _csvreader->getContent(playersHand, dealersUpCard);
-            
+
             if(hand->rank() >= 14) {
                 if(result == "A" && _runningCount >= 4) {
                     return Action::Surrender;
@@ -70,19 +70,17 @@ public:
         }
         return _basicStrategy->getAction(hand, dealersUpcardRank);
     }
-    
+
     bool takesInsurance() const override {
         return _runningCount >= 3;
     }
-    
+
     std::string toString() const override {
         std::string result = "KO smart";
         result += "(key count:" + std::to_string(keyCount);
         result += " running count:" + std::to_string(_runningCount) + ")";
         return result;
     }
-    
-protected:
 
 private:
     CSVReader *_csvreader;

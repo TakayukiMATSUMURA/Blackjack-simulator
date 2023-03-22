@@ -40,7 +40,7 @@ public:
         static Dealer dealer;
         return &dealer;
     }
-    
+
     void shuffle();
     bool needsShuffle() const;
     void dealHandTo(Player*);
@@ -54,23 +54,21 @@ public:
 
     int upCardRank() const;
     Hand* hand() const { return _hand; }
-    
+
     void pay(Player*, float);
-    
+
     void add(Player*);
-    
+
     std::string toString() const;
-    
-protected:
 
 private:
     std::vector<Card*> _cards;
-    
+
     Card* _upCard;
     Card* _holeCard;
     Hand* _hand;
     Counter<std::string>* _handRankCounter;
     Counter<std::string>* _handRankCounterForEachRanks[10];
-    
+
     Player* _counter;
 };

@@ -24,7 +24,7 @@ Dealer::Dealer() {
     _hand = nullptr;
     _handRankCounter = new Counter<std::string>();
     _counter = nullptr;
-    
+
     for(int i = 0; i < 10; i++) {
         _handRankCounterForEachRanks[i] = new Counter<std::string>();
     }
@@ -41,7 +41,7 @@ Dealer::~Dealer() {
 
 void Dealer::shuffle() {
     _cards = Card::getDeck(Rule::instance()->deck);
-    
+
     std::random_device rnd;
     std::mt19937_64 mt(rnd());
     std::shuffle(std::begin(_cards), std::end(_cards), mt);
@@ -60,7 +60,7 @@ void Dealer::dealHandTo(Player* player) {
     for(int i = 0; i < 2; i++) {
         cards.push_back(deal());
     }
-    
+
     player->receive(cards);
 }
 
@@ -73,7 +73,7 @@ void Dealer::dealHandToSelf() {
     _holeCard = _cards.back();
     _cards.pop_back();
     cards.push_back(_holeCard);
-    
+
     _hand = new Hand(cards);
 
     if(Config::instance()->isDebugMode) {
@@ -84,11 +84,11 @@ void Dealer::dealHandToSelf() {
 Card* Dealer::deal() {
     auto card = _cards.back();
     _cards.pop_back();
-    
+
     if(_counter != nullptr) {
         _counter->count(card);
     }
-    
+
     return card;
 }
 
@@ -114,7 +114,7 @@ void Dealer::doAction() {
     if(_counter != nullptr) {
         _counter->count(_holeCard);
     }
-    
+
     while(_hand->rank() < 17 || (_hand->isSoft(17) && Rule::instance()->hitSoft17)) {
         _hand->add(deal());
     }
@@ -143,9 +143,8 @@ std::string Dealer::toString() const {
             result += "Hand distribution(upcard:" + upCard + ")\n";
             result += _handRankCounterForEachRanks[i]->toStringInDescendingOrder() + "\n\n";
         }
-        
+
         result += "Hand distribution(all)\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
-        
         result += "Hand distribution except for BJ\n";
         for(int i = 0; i < 2; i++) {
             auto upCard = i == 0 ? std::to_string(10) : "A";

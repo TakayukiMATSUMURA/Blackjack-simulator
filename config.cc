@@ -51,6 +51,6 @@ IStrategy* Config::getStrategy() {
     else if(strategy == "KOSmart") {
         return new KOSmart(Rule::instance()->deck, betSpread);
     }
-    
+
     return new BasicStrategy();
 }

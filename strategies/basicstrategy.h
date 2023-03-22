@@ -28,7 +28,7 @@ public:
     BasicStrategy() {
         _csvreader = new CSVReader("./strategies/BasicStrategy.csv");
     }
-    
+
     virtual ~BasicStrategy() {
         delete _csvreader;
     }
@@ -36,7 +36,7 @@ public:
     void reset() override {}
 
     void count(Card*) override {}
-    
+
     Action getAction(Hand* hand, int dealersUpcardRank) const override {
         std::string dealersUpCard = (dealersUpcardRank == 1) ? "A" : std::to_string(dealersUpcardRank);
         std::string playersHand = "";
@@ -51,24 +51,24 @@ public:
                 (hand->rank() >= 17) ? "17" : std::to_string(hand->rank());
         }
         auto result = _csvreader->getContent(playersHand, dealersUpCard);
-        
+
         if(result == "D") {
             return hand->canDoubleDownOrSurrender() ? Action::DoubleDown : Action::Hit;
         }
-        
+
         if(result == "S") return Action::Stand;
         if(result == "P") return Action::Split;
         if(result == "PH") {
             return Rule::instance()->DaS ? Action::Split : Action::Hit;
         }
-        
+
         if(result == "R") {
             return hand->canDoubleDownOrSurrender() ? Action::Surrender : Action::Hit;
         }
-        
+
         return Action::Hit;
     }
-    
+
     bool takesInsurance() const override {
         return false;
     }
@@ -76,7 +76,7 @@ public:
     int betAmount(int unit) const override { return unit; }
 
     std::string toString() const override { return "Basic strategy"; }
-    
+
 private:
     CSVReader* _csvreader;
 };

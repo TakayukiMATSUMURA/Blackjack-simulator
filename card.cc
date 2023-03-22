@@ -34,7 +34,7 @@ Card* Card::getInstance(std::string str) {
     char suit = (str[1] == 'c') ? 0 :
         (str[1] == 'd') ? 1 :
         (str[1] == 'h') ? 2 : 3;
-    
+
     static Card allCards[52] = {
         Card("Ac"),
         Card("Ad"),
@@ -89,7 +89,7 @@ Card* Card::getInstance(std::string str) {
         Card("Kh"),
         Card("Ks"),
     };
-    
+
     int index = (rank - 1) * 4 + suit;
     return &allCards[index];
 }

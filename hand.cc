@@ -46,9 +46,7 @@ void Hand::add(Card* card) {
 }
 
 bool Hand::isBlackjack() const {
-    return _cards.size() == 2 &&
-        ((_cards[0]->rank == A && _cards[1]->rank == T) ||
-         (_cards[0]->rank == T && _cards[1]->rank == A));
+    return _cards.size() == 2 && ((_cards[0]->rank == A && _cards[1]->rank == T) || (_cards[0]->rank == T && _cards[1]->rank == A));
 }
 
 bool Hand::isBusted() const {
@@ -132,7 +130,7 @@ std::string Hand::toString() const {
     for(const auto& card : _cards) {
         result += card->toString();
     }
-    
+
     result += ":" + rankString();
     if(bet() > 0) {
         result += " " + std::to_string(bet()) + "bet";

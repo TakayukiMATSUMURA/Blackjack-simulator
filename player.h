@@ -33,7 +33,7 @@ class Player {
 public:
     Player(int, IStrategy*);
     virtual ~Player();
-    
+
     void bet(int);
     int betAmount() const;
     void receive(std::vector<Card*>&);
@@ -43,28 +43,26 @@ public:
     void doAction(Dealer*);
     void adjust(Hand*);
     bool hasBlackjack() const;
-    
+
     void count(Card*);
     void onShuffle();
-    
+
     void recordResult(Dealer*);
-    
+
     float expectedValue() const;
     std::string toString() const;
-    
-protected:
 
 private:
     int _bankroll;
     int _betAmount;
     bool _takesInsurance;
     IStrategy* _strategy;
-    
+
     std::vector<Hand*> _hands;
 
     int _totalBetAmount;
     int _totalPrizeAmount;
-    
+
     Counter<std::string>* _resultCounter;
     Counter<std::string> * _handRankCounter;
     Counter<std::string> * _handRankAfterDoubleDownCounter;

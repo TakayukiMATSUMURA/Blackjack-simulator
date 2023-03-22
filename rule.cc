@@ -39,5 +39,3 @@ Rule::Rule(Parameters params) : deck(params.deck),
 
 Rule::~Rule() {
 }
-
-

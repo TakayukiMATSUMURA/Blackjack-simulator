@@ -31,11 +31,11 @@ public:
 
         return _instance;
     }
-    
+
 protected:
     Singleton() {}
     virtual ~Singleton() {}
-    
+
 private:
     static HostClass* _instance;
 };
