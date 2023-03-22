@@ -24,7 +24,7 @@ public:
     }
 
     void dealHand(Player*, Shoe*);
-    void dealHandToSelf(Shoe*);
+    Card* dealHandToSelf(Shoe*);
     bool has(int) const;
     bool hasBlackjack() const;
     bool isBusted() const;

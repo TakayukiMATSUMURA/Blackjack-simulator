@@ -13,7 +13,8 @@ void Simulation::step() {
     _player->bet(2);
 
     _dealer->dealHand(_player, _shoe);
-    _dealer->dealHandToSelf(_shoe);
+    auto upCard = _dealer->dealHandToSelf(_shoe);
+    _player->count(upCard);
 
     if(_dealer->has(A)) {
         _player->doInsuranceOrNot(_dealer);

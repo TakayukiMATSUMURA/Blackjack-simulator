@@ -27,7 +27,7 @@ void Dealer::dealHand(Player* player, Shoe* shoe) {
     player->receive(cards);
 }
 
-void Dealer::dealHandToSelf(Shoe* shoe) {
+Card* Dealer::dealHandToSelf(Shoe* shoe) {
     delete _hand;
 
     std::vector<Card*> cards;
@@ -41,6 +41,8 @@ void Dealer::dealHandToSelf(Shoe* shoe) {
     if(Config::instance()->isDebugMode) {
         std::cout << "Dealer's upcard:" << _upCard->toString() << std::endl;
     }
+
+    return _upCard;
 }
 
 bool Dealer::has(int rank) const {
