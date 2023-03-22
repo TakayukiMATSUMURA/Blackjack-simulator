@@ -9,43 +9,55 @@
 
 #include "./include/simulation.h"
 
-void Simulation::start(Player* player) {
-    auto dealer = new Dealer();
-    dealer->add(player);
+Simulation::Simulation(Dealer* dealer, Player* player) {
+    _dealer = dealer;
+    _player = player;
 
+    _dealer->add(player);
+}
+
+Simulation::~Simulation() {
+}
+
+void Simulation::step() {
+    _player->bet(2);
+
+    _dealer->dealHandTo(_player);
+    _dealer->dealHandToSelf();
+
+    if(_dealer->has(A)) {
+        _player->doInsuranceOrNot(_dealer);
+    }
+    if(_dealer->hasBlackjack()) {
+        if(_player->takesInsurance()) {
+            _player->getPrize(1.5);
+        }
+    }
+    else {
+        _player->doAction(_dealer);
+    }
+    _dealer->doAction();
+
+    _player->adjust(_dealer->hand());
+
+    _player->recordResult(_dealer);
+    _dealer->recordResult();
+}
+
+void Simulation::start() {
     int gameCounter = 0;
 
     std::cout << "Simulation start" << std::endl;
     while(true) {
-        dealer->shuffle();
+        _dealer->shuffle();
 
-        while(!dealer->needsShuffle()) {
+        while(!_dealer->needsShuffle()) {
             if(Config::instance()->isDebugMode) {
                 std::cout << "Game:" << gameCounter << " start" << std::endl;
             }
 
-            player->bet(2);
+            step();
 
-            dealer->dealHandTo(player);
-            dealer->dealHandToSelf();
-
-            if(dealer->has(A)) {
-                player->doInsuranceOrNot(dealer);
-            }
-            if(dealer->hasBlackjack()) {
-                if(player->takesInsurance()) {
-                    player->getPrize(1.5);
-                }
-            }
-            else {
-                player->doAction(dealer);
-            }
-            dealer->doAction();
-
-            player->adjust(dealer->hand());
-
-            player->recordResult(dealer);
-            dealer->recordResult();
             if(Config::instance()->isDebugMode) {
                 std::cout << std::endl;
             }
@@ -58,9 +70,7 @@ void Simulation::start(Player* player) {
     std::cout << std::endl;
 
     std::cout << "Simulation results" << std::endl;
-    std::cout << player->toString() << std::endl;
+    std::cout << _player->toString() << std::endl;
     std::cout << std::endl;
-    std::cout << dealer->toString() << std::endl;
-
-    delete dealer;
+    std::cout << _dealer->toString() << std::endl;
 }

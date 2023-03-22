@@ -15,7 +15,13 @@
 
 class Simulation {
 public:
-    Simulation();
+    Simulation(Dealer*, Player*);
     virtual ~Simulation();
-    static void start(Player*);
+    void start();
+
+private:
+    Dealer* _dealer;
+    Player* _player;
+
+    void step();
 };
