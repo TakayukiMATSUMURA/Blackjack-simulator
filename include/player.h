@@ -6,8 +6,10 @@
 
 #include "./hand.h"
 #include "./config.h"
+#include "./shoe.h"
 #include "./strategies/istrategy.h"
 #include "./lib/counter.h"
+
 class Dealer;
 
 class Player {
@@ -21,7 +23,7 @@ public:
     void getPrize(float, Hand* = nullptr);
     void doInsuranceOrNot(Dealer*);
     bool takesInsurance() const;
-    void doAction(Dealer*);
+    void doAction(Dealer*, Shoe*);
     void adjust(Hand*);
     bool hasBlackjack() const;
 

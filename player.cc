@@ -86,7 +86,7 @@ bool Player::takesInsurance() const {
     return _takesInsurance;
 }
 
-void Player::doAction(Dealer* dealer) {
+void Player::doAction(Dealer* dealer, Shoe* shoe) {
     if(hasBlackjack()) return;
     int handCounter = 0;
     while(handCounter < _hands.size()) {
@@ -113,13 +113,13 @@ void Player::doAction(Dealer* dealer) {
 
             switch(action) {
                 case Action::Hit:
-                    currentHand->add(dealer->deal());
+                    currentHand->add(shoe->draw());
                     break;
                 case Action::DoubleDown:
                     _bankroll -= currentHand->bet();
                     _totalBetAmount += currentHand->bet();
 
-                    currentHand->doubleDownWith(dealer->deal());
+                    currentHand->doubleDownWith(shoe->draw());
                     _handRankAfterDoubleDownCounter->count(currentHand->rankString());
                     break;
                 case Action::Split: {
@@ -131,7 +131,7 @@ void Player::doAction(Dealer* dealer) {
                         handCounter++;
                     }
 
-                    auto newHand = currentHand->split(dealer->deal(), dealer->deal());
+                    auto newHand = currentHand->split(shoe->draw(), shoe->draw());
                     _hands.push_back(newHand);
                     break;
                 }

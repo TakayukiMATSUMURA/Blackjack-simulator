@@ -9,6 +9,7 @@
 #include "./card.h"
 #include "./hand.h"
 #include "./player.h"
+#include "./shoe.h"
 #include "./lib/singleton.h"
 #include "./lib/counter.h"
 
@@ -22,16 +23,13 @@ public:
         return &dealer;
     }
 
-    void shuffle();
-    bool needsShuffle() const;
-    void dealHandTo(Player*);
-    void dealHandToSelf();
-    Card* deal();
+    void dealHand(Player*, Shoe*);
+    void dealHandToSelf(Shoe*);
     bool has(int) const;
     bool hasBlackjack() const;
     bool isBusted() const;
     void recordResult();
-    void doAction(Player*);
+    void doAction(Player*, Shoe*);
 
     int upCardRank() const;
     Hand* hand() const { return _hand; }
@@ -41,8 +39,6 @@ public:
     std::string toString() const;
 
 private:
-    std::vector<Card*> _cards;
-
     Card* _upCard;
     Card* _holeCard;
     Hand* _hand;

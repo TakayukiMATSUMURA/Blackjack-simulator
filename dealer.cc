@@ -1,7 +1,6 @@
 #include "./include/dealer.h"
 
 Dealer::Dealer() {
-    _cards = Card::getDeck(Rule::instance()->deck);
     _hand = nullptr;
     _handRankCounter = new Counter<std::string>();
 
@@ -19,35 +18,22 @@ Dealer::~Dealer() {
     }
 }
 
-void Dealer::shuffle() {
-    _cards = Card::getDeck(Rule::instance()->deck);
-
-    std::random_device rnd;
-    std::mt19937_64 mt(rnd());
-    std::shuffle(std::begin(_cards), std::end(_cards), mt);
-}
-
-bool Dealer::needsShuffle() const {
-    return _cards.size() <= Rule::instance()->deck * 52 * (100.0 - Rule::instance()->penetration) / 100;
-}
-
-void Dealer::dealHandTo(Player* player) {
+void Dealer::dealHand(Player* player, Shoe* shoe) {
     std::vector<Card*> cards;
     for(int i = 0; i < 2; i++) {
-        cards.push_back(deal());
+        cards.push_back(shoe->draw());
     }
 
     player->receive(cards);
 }
 
-void Dealer::dealHandToSelf() {
+void Dealer::dealHandToSelf(Shoe* shoe) {
     delete _hand;
 
     std::vector<Card*> cards;
-    _upCard = deal();
+    _upCard = shoe->draw();
     cards.push_back(_upCard);
-    _holeCard = _cards.back();
-    _cards.pop_back();
+    _holeCard = shoe->draw();
     cards.push_back(_holeCard);
 
     _hand = new Hand(cards);
@@ -55,12 +41,6 @@ void Dealer::dealHandToSelf() {
     if(Config::instance()->isDebugMode) {
         std::cout << "Dealer's upcard:" << _upCard->toString() << std::endl;
     }
-}
-
-Card* Dealer::deal() {
-    auto card = _cards.back();
-    _cards.pop_back();
-    return card;
 }
 
 bool Dealer::has(int rank) const {
@@ -81,11 +61,11 @@ void Dealer::recordResult() {
     _handRankCounterForEachRanks[index]->count(_hand->rankString());
 }
 
-void Dealer::doAction(Player* player) {
+void Dealer::doAction(Player* player, Shoe* shoe) {
     player->count(_holeCard);
 
     while(_hand->rank() < 17 || (_hand->isSoft(17) && Rule::instance()->hitSoft17)) {
-        auto card = deal();
+        auto card = shoe->draw();
         player->count(card);
         _hand->add(card);
     }

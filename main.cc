@@ -31,11 +31,13 @@ int main(int argc, char *argv[]) {
     auto strategy = Config::instance()->getStrategy();
     auto player = new Player(0, strategy);
     auto dealer = new Dealer();
-    auto simulation = new Simulation(dealer, player);
+    auto shoe = new Shoe(Rule::instance()->deck);
+    auto simulation = new Simulation(dealer, player, shoe);
     simulation->start();
 
     delete player;
     delete dealer;
+    delete shoe;
     delete simulation;
     return 0;
 }

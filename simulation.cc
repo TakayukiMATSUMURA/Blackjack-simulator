@@ -1,8 +1,9 @@
 #include "./include/simulation.h"
 
-Simulation::Simulation(Dealer* dealer, Player* player) {
+Simulation::Simulation(Dealer* dealer, Player* player, Shoe* shoe) {
     _dealer = dealer;
     _player = player;
+    _shoe = shoe;
 }
 
 Simulation::~Simulation() {
@@ -11,8 +12,8 @@ Simulation::~Simulation() {
 void Simulation::step() {
     _player->bet(2);
 
-    _dealer->dealHandTo(_player);
-    _dealer->dealHandToSelf();
+    _dealer->dealHand(_player, _shoe);
+    _dealer->dealHandToSelf(_shoe);
 
     if(_dealer->has(A)) {
         _player->doInsuranceOrNot(_dealer);
@@ -23,9 +24,9 @@ void Simulation::step() {
         }
     }
     else {
-        _player->doAction(_dealer);
+        _player->doAction(_dealer, _shoe);
     }
-    _dealer->doAction(_player);
+    _dealer->doAction(_player, _shoe);
 
     _player->adjust(_dealer->hand());
 
@@ -38,10 +39,10 @@ void Simulation::start() {
 
     std::cout << "Simulation start" << std::endl;
     while(true) {
-        _dealer->shuffle();
+        _shoe->shuffle();
         _player->onShuffle();
 
-        while(!_dealer->needsShuffle()) {
+        while(!_shoe->needsShuffle()) {
             if(Config::instance()->isDebugMode) {
                 std::cout << "Game:" << gameCounter << " start" << std::endl;
             }
