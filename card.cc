@@ -17,7 +17,7 @@
  *
  */
 /**********************************************************************/
-#include "./card.h"
+#include "./include/card.h"
 
 
 Card::Card(std::string arg) : rank(arg[0] == 'A' ? 1 : arg[0] == 'T' ? 10 : arg[0] == 'J' ? 10 : arg[0] == 'Q' ? 10 : arg[0] == 'K' ? 10 : arg[0] - '0'),

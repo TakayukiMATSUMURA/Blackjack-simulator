@@ -17,8 +17,8 @@
  *
  */
 /**********************************************************************/
-#include "./hand.h"
-#include "./dealer.h"
+#include "./include/hand.h"
+#include "./include/dealer.h"
 
 Hand::Hand(Card* card, int bet) {
     _cards.push_back(card);

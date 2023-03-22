@@ -17,8 +17,8 @@
  *
  */
 /**********************************************************************/
-#include "./player.h"
-#include "./dealer.h"
+#include "./include/player.h"
+#include "./include/dealer.h"
 
 Player::Player(int bankroll, IStrategy* strategy) {
     _bankroll = bankroll;

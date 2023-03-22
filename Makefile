@@ -1,14 +1,22 @@
 CXX = g++
-TARGET = blackjack-simulator
+BINDIR = ./bin
+TARGET = ./bin/blackjack-simulator
 CXXFLAGS = -Wall -O3 -std=c++11
-SRCS = card.cc config.cc dealer.cc hand.cc player.cc rule.cc simulation.cc main.cc
-OBJS := $(SRCS:.cc=.o)
+SRCS = $(wildcard *.cc)
+OBJDIR = ./obj
+OBJS := $(addprefix $(OBJDIR)/, $(SRCS:.cc=.o))
 
 $(TARGET): $(OBJS)
+	mkdir -p $(BINDIR)
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
+
+$(OBJDIR)/%.o: %.cc
+	mkdir -p $(OBJDIR)
+	@[ -d $(OBJDIR) ]
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 run: $(TARGET)
 	./$(TARGET)
 
 clean:
-	rm -f $(TARGET) $(OBJS)
+	rm -rf $(BINDIR) $(OBJDIR)

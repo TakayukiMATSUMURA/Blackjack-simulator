@@ -17,7 +17,7 @@
  *
  */
 /**********************************************************************/
-#include "./config.h"
+#include "./include/config.h"
 
 Config::Parameters Config::parameters;
 

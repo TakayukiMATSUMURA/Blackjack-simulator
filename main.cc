@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "./dealer.h"
-#include "./player.h"
-#include "./rule.h"
-#include "./simulation.h"
-#include "./strategies/basicstrategy.h"
-#include "./strategies/KOSmart.h"
-#include "./lib/optioninterpreter.h"
+#include "./include/dealer.h"
+#include "./include/player.h"
+#include "./include/rule.h"
+#include "./include/simulation.h"
+#include "./include/strategies/basicstrategy.h"
+#include "./include/strategies/KOSmart.h"
+#include "./include/lib/optioninterpreter.h"
 
 int main(int argc, char *argv[]) {
     std::cout << "Blackjack simulator" << std::endl;

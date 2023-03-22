@@ -17,7 +17,7 @@
  *
  */
 /**********************************************************************/
-#include "./dealer.h"
+#include "./include/dealer.h"
 
 Dealer::Dealer() {
     _cards = Card::getDeck(Rule::instance()->deck);

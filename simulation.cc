@@ -7,7 +7,7 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-#include "simulation.h"
+#include "./include/simulation.h"
 
 void Simulation::start(Player* player) {
     auto dealer = new Dealer();

@@ -26,7 +26,7 @@
 class BasicStrategy : public IStrategy {
 public:
     BasicStrategy() {
-        _csvreader = new CSVReader("./strategies/BasicStrategy.csv");
+        _csvreader = new CSVReader("./include/strategies/BasicStrategy.csv");
     }
 
     virtual ~BasicStrategy() {

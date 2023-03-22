@@ -17,7 +17,7 @@
  *
  */
 /**********************************************************************/
-#include "./rule.h"
+#include "./include/rule.h"
 
 Rule::Parameters Rule::parameters;
 
