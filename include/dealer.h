@@ -50,14 +50,12 @@ public:
     bool hasBlackjack() const;
     bool isBusted() const;
     void recordResult();
-    void doAction();
+    void doAction(Player*);
 
     int upCardRank() const;
     Hand* hand() const { return _hand; }
 
     void pay(Player*, float);
-
-    void add(Player*);
 
     std::string toString() const;
 
@@ -69,6 +67,4 @@ private:
     Hand* _hand;
     Counter<std::string>* _handRankCounter;
     Counter<std::string>* _handRankCounterForEachRanks[10];
-
-    Player* _counter;
 };

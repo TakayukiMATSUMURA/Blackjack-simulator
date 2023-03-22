@@ -12,8 +12,6 @@
 Simulation::Simulation(Dealer* dealer, Player* player) {
     _dealer = dealer;
     _player = player;
-
-    _dealer->add(player);
 }
 
 Simulation::~Simulation() {
@@ -36,7 +34,7 @@ void Simulation::step() {
     else {
         _player->doAction(_dealer);
     }
-    _dealer->doAction();
+    _dealer->doAction(_player);
 
     _player->adjust(_dealer->hand());
 
@@ -50,6 +48,7 @@ void Simulation::start() {
     std::cout << "Simulation start" << std::endl;
     while(true) {
         _dealer->shuffle();
+        _player->onShuffle();
 
         while(!_dealer->needsShuffle()) {
             if(Config::instance()->isDebugMode) {
