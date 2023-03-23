@@ -115,15 +115,19 @@ void Player::doAction(Dealer* dealer, Shoe* shoe) {
                 std::cout << "action:" << actionString << std::endl;
             }
 
+            Card* card;
             switch(action) {
                 case Action::Hit:
-                    currentHand->add(shoe->draw());
+                    card = shoe->draw();
+                    count(card);
+                    currentHand->add(card);
                     break;
                 case Action::DoubleDown:
                     _bankroll -= currentHand->bet();
                     _totalBetAmount += currentHand->bet();
-
-                    currentHand->doubleDownWith(shoe->draw());
+                    card = shoe->draw();
+                    count(card);
+                    currentHand->doubleDownWith(card);
                     _handRankAfterDoubleDownCounter->count(currentHand->rankString());
                     break;
                 case Action::Split: {
