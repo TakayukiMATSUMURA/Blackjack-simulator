@@ -27,6 +27,7 @@ Player::~Player() {
     delete _doubledownCounter;
     delete _splitCounter;
     delete _cardCountOfHandCounter;
+    delete _diffBetweenShufflesCounter;
 }
 
 void Player::bet(int unit) {
