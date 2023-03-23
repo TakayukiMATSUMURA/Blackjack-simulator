@@ -36,3 +36,13 @@ Card* Shoe::draw() {
     _cards.pop_back();
     return card;
 }
+
+Card* Shoe::pickup(int rank) {
+    auto it = std::find_if(std::begin(_cards), std::end(_cards), [rank](Card* card){ return card->rank == rank; });
+    auto result = *it;
+    if (!hasInfiniteDeck()) {
+        _cards.erase(it);
+    }
+
+    return result;
+}

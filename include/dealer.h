@@ -23,8 +23,7 @@ public:
         return &dealer;
     }
 
-    void dealHand(Player*, Shoe*);
-    Card* dealHandToSelf(Shoe*);
+    void dealHandToSelf(Card*, Card*);
     bool has(int) const;
     bool hasBlackjack() const;
     bool isBusted() const;

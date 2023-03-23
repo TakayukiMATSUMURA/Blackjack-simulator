@@ -8,7 +8,9 @@ Config::Config(Parameters params) : isDebugMode(params.isDebugMode),
                                     betSpread(params.betSpread),
                                     game(params.game),
                                     N(params.N),
-                                    isNoHoleCard(params.isNoHoleCard)
+                                    isNoHoleCard(params.isNoHoleCard),
+                                    playersHand(params.playersHand),
+                                    dealersUpCardRank(params.dealersUpCardRank)
 {
     std::cout << "Config" << std::endl;
     if(isDebugMode) {

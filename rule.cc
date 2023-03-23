@@ -1,4 +1,5 @@
 #include "./include/rule.h"
+#include "./include/config.h"
 
 Rule::Parameters Rule::parameters;
 
@@ -12,7 +13,7 @@ Rule::Rule(Parameters params) : deck(params.deck),
     if(DaS) {
         std::cout << "DaS" << std::endl;
     }
-    if(!isInfiniteDeck) {
+    if(!(isInfiniteDeck || Config::parameters.fixCards())) {
         std::cout << "penetration:" << penetration << "%" << std::endl;
     }
     if(hitSoft17) {

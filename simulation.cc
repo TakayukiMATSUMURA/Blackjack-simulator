@@ -9,12 +9,27 @@ Simulation::Simulation(Dealer* dealer, Player* player, Shoe* shoe) {
 Simulation::~Simulation() {
 }
 
+void Simulation::dealHandToPlayer() {
+    std::vector<Card*> cards;
+
+    for(int i = 0; i < 2; i++) {
+        cards.push_back(_shoe->draw());
+    }
+    _player->receive(cards);
+}
+
+void Simulation::dealHandToDealer() {
+    auto upCard = _shoe->draw();
+    auto holeCard = _shoe->draw();
+    _dealer->dealHandToSelf(upCard, holeCard);
+    _player->count(upCard);
+}
+
 void Simulation::step() {
     _player->bet(2);
 
-    _dealer->dealHand(_player, _shoe);
-    auto upCard = _dealer->dealHandToSelf(_shoe);
-    _player->count(upCard);
+    dealHandToPlayer();
+    dealHandToDealer();
 
     if(_dealer->has(A)) {
         _player->doInsuranceOrNot(_dealer);
@@ -65,11 +80,15 @@ void Simulation::start() {
         }
     }
     end:
+    showResult();
+}
+
+void Simulation::showResult() {
     std::cout << "Simulation finish" << std::endl;
     std::cout << std::endl;
 
     std::cout << "Simulation results" << std::endl;
-    std::cout << _player->toString() << std::endl;
-    std::cout << std::endl;
     std::cout << _dealer->toString() << std::endl;
+    std::cout << std::endl;
+    std::cout << _player->toString() << std::endl;
 }

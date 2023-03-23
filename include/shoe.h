@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 #include <random>
 #include <climits>
 
@@ -15,7 +16,8 @@ public:
     void shuffle();
     bool needsShuffle() const;
     bool hasInfiniteDeck() const;
-    Card *draw();
+    Card* draw();
+    Card* pickup(int);
 
 private:
     const int _deckNum;

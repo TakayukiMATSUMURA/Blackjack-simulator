@@ -25,6 +25,8 @@ public:
     const int game;
     const int N;
     const bool isNoHoleCard;
+    const std::string playersHand;
+    const int dealersUpCardRank;
 
     IStrategy* getStrategy();
 
@@ -36,6 +38,12 @@ public:
         int game = 0;
         int N = 1;
         bool isNoHoleCard = false;
+        std::string playersHand = "";
+        int dealersUpCardRank = -1;
+
+        bool fixCards() const {
+            return playersHand != "" || dealersUpCardRank != -1;
+        }
     };
 
     static Parameters parameters;

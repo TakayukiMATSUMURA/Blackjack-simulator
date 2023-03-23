@@ -7,14 +7,16 @@
 
 class Simulation {
 public:
-    Simulation(Dealer*, Player*, Shoe*);
+    Simulation(Dealer *, Player *, Shoe *);
     virtual ~Simulation();
-    void start();
+    virtual void start();
 
-private:
-    Dealer* _dealer;
+protected:
+    virtual void dealHandToPlayer();
+    virtual void dealHandToDealer();
+    void step();
+    void showResult();
+    Dealer *_dealer;
     Player* _player;
     Shoe* _shoe;
-
-    void step();
 };

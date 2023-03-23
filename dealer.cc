@@ -26,22 +26,11 @@ Dealer::~Dealer() {
     delete _bustedHandCardCounter;
 }
 
-void Dealer::dealHand(Player* player, Shoe* shoe) {
+void Dealer::dealHandToSelf(Card* upCard, Card* holeCard) {
     std::vector<Card*> cards;
-    for(int i = 0; i < 2; i++) {
-        cards.push_back(shoe->draw());
-    }
-
-    player->receive(cards);
-}
-
-Card* Dealer::dealHandToSelf(Shoe* shoe) {
-    delete _hand;
-
-    std::vector<Card*> cards;
-    _upCard = shoe->draw();
+    _upCard = upCard;
     cards.push_back(_upCard);
-    _holeCard = shoe->draw();
+    _holeCard = holeCard;
     cards.push_back(_holeCard);
 
     _hand = new Hand(cards);
@@ -49,8 +38,6 @@ Card* Dealer::dealHandToSelf(Shoe* shoe) {
     if(Config::instance()->isDebugMode) {
         std::cout << "Dealer's upcard:" << _upCard->toString() << std::endl;
     }
-
-    return _upCard;
 }
 
 bool Dealer::has(int rank) const {
@@ -77,6 +64,10 @@ void Dealer::recordResult() {
     else {
         _patHandCardCounter->count(_hand->size());
     }
+
+    delete _hand;
+    _hand = nullptr;
+    _upCard = _holeCard = nullptr;
 }
 
 void Dealer::doAction(Player* player, Shoe* shoe) {
