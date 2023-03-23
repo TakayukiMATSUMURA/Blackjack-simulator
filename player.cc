@@ -51,6 +51,9 @@ int Player::betAmount() const {
 
 void Player::receive(std::vector<Card*>& cards) {
     auto hand = new Hand(cards, _betAmount);
+    for(const Card* card : cards) {
+        count(card);
+    }
     _hands.push_back(hand);
 
     if(Config::instance()->isDebugMode) {
@@ -132,7 +135,11 @@ void Player::doAction(Dealer* dealer, Shoe* shoe) {
                         handCounter++;
                     }
 
-                    auto newHand = currentHand->split(shoe->draw(), shoe->draw());
+                    auto card0 = shoe->draw();
+                    count(card0);
+                    auto card1 = shoe->draw();
+                    count(card1);
+                    auto newHand = currentHand->split(card0, card1);
                     _hands.push_back(newHand);
                     break;
                 }
