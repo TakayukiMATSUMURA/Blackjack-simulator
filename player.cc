@@ -51,7 +51,7 @@ int Player::betAmount() const {
 
 void Player::receive(std::vector<Card*>& cards) {
     auto hand = new Hand(cards, _betAmount);
-    for(const Card* card : cards) {
+    for(Card* card : cards) {
         count(card);
     }
     _hands.push_back(hand);
