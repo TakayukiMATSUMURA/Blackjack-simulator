@@ -44,4 +44,7 @@ private:
     Hand* _hand;
     Counter<std::string>* _handRankCounter;
     Counter<std::string>* _handRankCounterForEachRanks[10];
+    Counter<int>* _allHandCardCounter;
+    Counter<int>* _patHandCardCounter;
+    Counter<int>* _bustedHandCardCounter;
 };

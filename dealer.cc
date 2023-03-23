@@ -7,6 +7,10 @@ Dealer::Dealer() {
     for(int i = 0; i < 10; i++) {
         _handRankCounterForEachRanks[i] = new Counter<std::string>();
     }
+
+    _allHandCardCounter = new Counter<int>();
+    _patHandCardCounter = new Counter<int>();
+    _bustedHandCardCounter = new Counter<int>();
 }
 
 Dealer::~Dealer() {
@@ -16,6 +20,10 @@ Dealer::~Dealer() {
     for(const auto& counter : _handRankCounterForEachRanks) {
         delete counter;
     }
+
+    delete _allHandCardCounter;
+    delete _patHandCardCounter;
+    delete _bustedHandCardCounter;
 }
 
 void Dealer::dealHand(Player* player, Shoe* shoe) {
@@ -61,6 +69,14 @@ void Dealer::recordResult() {
     _handRankCounter->count(_hand->rankString());
     auto index = _upCard->rank == A ? 9 : _upCard->rank - 2;
     _handRankCounterForEachRanks[index]->count(_hand->rankString());
+
+    _allHandCardCounter->count(_hand->size());
+    if(isBusted()) {
+        _bustedHandCardCounter->count(_hand->size());
+    }
+    else {
+        _patHandCardCounter->count(_hand->size());
+    }
 }
 
 void Dealer::doAction(Player* player, Shoe* shoe) {
@@ -84,7 +100,7 @@ int Dealer::upCardRank() const {
 std::string Dealer::toString() const {
     std::string result = "############# Dealer ##############\n";
     if(!Config::instance()->displaysDealerDetails) {
-        result += "Hand distribution\n" + _handRankCounter->toStringInDescendingOrder() + "\n";
+        result += "Hand distribution\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
     }
     else {
         for(int i = 0; i < 10; i++) {
@@ -105,5 +121,15 @@ std::string Dealer::toString() const {
         _handRankCounter->erase("BJ");
         result += "all\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
     }
+
+    result += "Hand cards distribution\n";
+    result += _allHandCardCounter->toStringInDescendingOrder() + "\n\n";
+
+    result += "Hand cards distribution(Pat hand)\n";
+    result += _patHandCardCounter->toStringInDescendingOrder() + "\n\n";
+
+    result += "Hand cards distribution(Busted hand)\n";
+    result += _bustedHandCardCounter->toStringInDescendingOrder() + "\n\n";
+
     return result;
 }
