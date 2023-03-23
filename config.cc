@@ -7,7 +7,8 @@ Config::Config(Parameters params) : isDebugMode(params.isDebugMode),
                                     strategy(params.strategy),
                                     betSpread(params.betSpread),
                                     game(params.game),
-                                    N(params.N)
+                                    N(params.N),
+                                    isNoHoleCard(params.isNoHoleCard)
 {
     std::cout << "Config" << std::endl;
     if(isDebugMode) {
@@ -16,6 +17,9 @@ Config::Config(Parameters params) : isDebugMode(params.isDebugMode),
     std::cout << "strategy:" << strategy << std::endl;
     if(strategy != "basic") {
         std::cout << "bet spread:" << betSpread << std::endl;
+    }
+    if(isNoHoleCard) {
+        std::cout << "No hole card" << std::endl;
     }
     std::cout << "game:" << game << std::endl;
     std::cout << "num for sample average:" << N << std::endl;

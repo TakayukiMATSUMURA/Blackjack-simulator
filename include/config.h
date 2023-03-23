@@ -24,6 +24,7 @@ public:
     const int betSpread;
     const int game;
     const int N;
+    const bool isNoHoleCard;
 
     IStrategy* getStrategy();
 
@@ -34,6 +35,7 @@ public:
         int betSpread = 1;
         int game = 0;
         int N = 1;
+        bool isNoHoleCard = false;
     };
 
     static Parameters parameters;

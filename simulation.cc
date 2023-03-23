@@ -19,7 +19,7 @@ void Simulation::step() {
     if(_dealer->has(A)) {
         _player->doInsuranceOrNot(_dealer);
     }
-    if(_dealer->hasBlackjack()) {
+    if(_dealer->hasBlackjack() && !Config::instance()->isNoHoleCard) {
         if(_player->takesInsurance()) {
             _player->getPrize(1.5);
         }
@@ -27,6 +27,13 @@ void Simulation::step() {
     else {
         _player->doAction(_dealer, _shoe);
     }
+
+    if(_dealer->hasBlackjack() && !Config::instance()->isNoHoleCard) {
+        if(_player->takesInsurance()) {
+            _player->getPrize(1.5);
+        }
+    }
+
     _dealer->doAction(_player, _shoe);
 
     _player->adjust(_dealer->hand());
