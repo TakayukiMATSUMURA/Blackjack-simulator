@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     optionInterpreter->add("g", " [n:int]:simulation game", [&](std::string arg){ Config::parameters.game = std::stoi(arg); });
     optionInterpreter->add("d", ":debug mode(display all games)", [&](){ Config::parameters.isDebugMode = true; });
     optionInterpreter->add("dealerdetail", ":display detail dealer's hand distributions", [&](){ Config::parameters.displaysDealerDetails = true; });
-    optionInterpreter->add("deck", " [1|2|6|8]:deck(default:6)", [&](std::string arg){ Rule::parameters.deck = std::stoi(arg); });
+    optionInterpreter->add("deck", " [1|2|6|8|infinite]:deck(default:6)", [&](std::string arg){ Rule::parameters.deck = arg == "infinite" ? INT_MAX : std::stoi(arg); });
     optionInterpreter->add("s", " [basic|KORookie|KOSmart]:strategy(default:basic)", [&](std::string arg){ Config::parameters.strategy = arg; });
     optionInterpreter->add("b", " [n:int]:bet spread(default:1)", [&](std::string arg){ Config::parameters.betSpread = std::stoi(arg); });
     optionInterpreter->add("n", " [n:int]:num of sample average(default:1)", [&](std::string arg){ Config::parameters.N = std::stoi(arg); });

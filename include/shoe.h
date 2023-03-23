@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <random>
+#include <climits>
 
 #include "./card.h"
 #include "./rule.h"
@@ -13,7 +14,10 @@ public:
 
     void shuffle();
     bool needsShuffle() const;
-    Card* draw();
+    bool hasInfiniteDeck() const;
+    Card *draw();
 
-    std::vector<Card*> _cards;
+private:
+    const int _deckNum;
+    std::vector<Card *> _cards;
 };
