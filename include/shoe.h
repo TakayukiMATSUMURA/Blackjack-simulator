@@ -22,4 +22,5 @@ public:
 private:
     const int _deckNum;
     std::vector<Card *> _cards;
+    std::mt19937* _mt;
 };
