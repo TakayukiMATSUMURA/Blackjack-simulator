@@ -40,6 +40,7 @@ Card* Shoe::pickup(int rank) {
     auto result = *it;
     if (!hasInfiniteDeck()) {
         _cards.erase(it);
+        std::shuffle(std::begin(_cards), std::end(_cards), *_mt);
     }
 
     return result;
