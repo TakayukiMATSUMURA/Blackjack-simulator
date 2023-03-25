@@ -16,6 +16,7 @@ public:
     struct Parameters {
         bool DaS = false;
         int deck = 6;
+        bool hitSoft17 = false;
     };
 
     static Parameters parameters;

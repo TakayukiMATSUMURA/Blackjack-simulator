@@ -6,7 +6,7 @@ Rule::Parameters Rule::parameters;
 Rule::Rule(Parameters params) : deck(params.deck),
                                 DaS(params.DaS),
                                 penetration(params.deck == 1 ? 65 : 75),
-                                hitSoft17(params.deck == 1) {
+                                hitSoft17(params.hitSoft17) {
     std::cout << "Rule" << std::endl;
     auto isInfiniteDeck = deck == INT_MAX;
     std::cout << "deck:" << (isInfiniteDeck ? "infinite" : std::to_string(deck)) << std::endl;
@@ -17,7 +17,10 @@ Rule::Rule(Parameters params) : deck(params.deck),
         std::cout << "penetration:" << penetration << "%" << std::endl;
     }
     if(hitSoft17) {
-        std::cout << "dealer hits soft 17" << std::endl;
+        std::cout << "Dealer hits soft 17" << std::endl;
+    }
+    else {
+        std::cout << "Dealer stands all 17s" << std::endl;
     }
     std::cout << std::endl;
 }
