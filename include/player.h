@@ -53,6 +53,6 @@ private:
     Counter<std::string>* _doubledownCounter;
     Counter<int>* _splitCounter;
     Counter<int>* _cardCountOfHandCounter;
-    Counter<int>* _diffBetweenShufflesCounter;
+    Counter<double>* _diffBetweenShufflesCounter;
     std::vector<int> _buffer;
 };

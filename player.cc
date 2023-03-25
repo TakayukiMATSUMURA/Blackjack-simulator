@@ -15,7 +15,7 @@ Player::Player(int bankroll, IStrategy* strategy) {
     _doubledownCounter = new Counter<std::string>();
     _splitCounter = new Counter<int>();
     _cardCountOfHandCounter = new Counter<int>();
-    _diffBetweenShufflesCounter = new Counter<int>();
+    _diffBetweenShufflesCounter = new Counter<double>();
 }
 
 Player::~Player() {
@@ -33,15 +33,15 @@ Player::~Player() {
 void Player::bet(int unit) {
     _takesInsurance = false;
 
-    int amount = _strategy->betAmount(unit);
+    int amount = _strategy->betAmount(unit * 2);
     _betAmount = amount;
     _bankroll -= _betAmount;
     _totalBetAmount += _betAmount;
 
     if(Config::instance()->isDebugMode) {
-        std::cout << "Player's bankroll:" << (_bankroll + _betAmount) << std::endl;
+        std::cout << "Player's bankroll:" << (double)(_bankroll + _betAmount) / 2 << std::endl;
         std::cout << "Strategy:" << _strategy->toString() << std::endl;
-        std::cout << "Player bets:" << _betAmount << std::endl;
+        std::cout << "Player bets:" << unit << std::endl;
     }
 }
 
@@ -205,8 +205,8 @@ void Player::onShuffle() {
     _buffer.push_back(_bankroll);
 
     if(_buffer.size() == Config::instance()->N){
-        float sum = std::accumulate(_buffer.begin(), _buffer.end(), 0);
-        auto average = std::round(sum / Config::instance()->N);
+        auto sum = std::accumulate(_buffer.begin(), _buffer.end(), 0);
+        auto average = ((double)sum / Config::instance()->N) / 2;
         _diffBetweenShufflesCounter->count(average);
         _buffer.clear();
     }

@@ -26,7 +26,7 @@ void Simulation::dealHandToDealer() {
 }
 
 void Simulation::step() {
-    _player->bet(2);
+    _player->bet(1);
 
     dealHandToPlayer();
     dealHandToDealer();

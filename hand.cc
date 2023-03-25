@@ -114,7 +114,7 @@ std::string Hand::toString() const {
 
     result += ":" + rankString();
     if(bet() > 0) {
-        result += " " + std::to_string(bet()) + "bet";
+        result += " " + std::to_string(bet() / 2) + "bet";
     }
     return result;
 }
