@@ -1,6 +1,6 @@
 #include "./include/simulation_with_same_hand.h"
 
-SimulationWithSameHand::SimulationWithSameHand(Dealer* dealer, Player* player, Shoe* shoe, int card0Rank = -1, int card1Rank = -1, int dealersUpCardRank = -1) : Simulation(dealer, player, shoe), _card0Rank(card0Rank), _card1Rank(card1Rank), _dealersUpCardRank(dealersUpCardRank) {
+SimulationWithSameHand::SimulationWithSameHand(Dealer* dealer, Player* player, Shoe* shoe, std::string playersHand, int dealersUpCardRank = -1) : Simulation(dealer, player, shoe), _playersHand(playersHand), _dealersUpCardRank(dealersUpCardRank) {
 }
 
 SimulationWithSameHand::~SimulationWithSameHand() {
@@ -9,15 +9,16 @@ SimulationWithSameHand::~SimulationWithSameHand() {
 void SimulationWithSameHand::dealHandToPlayer() {
     std::vector<Card*> cards;
 
-    if(_card0Rank != -1) {
-        cards.push_back(_shoe->pickup(_card0Rank));
-    }
-    if(_card1Rank != -1) {
-        cards.push_back(_shoe->pickup(_card1Rank));
+    for (int i = 0; i < _playersHand.length(); i++) {
+        auto rank = Card::getRank(_playersHand[i]);
+        cards.push_back(_shoe->pickup(rank));
     }
 
-    for(int i = 0; i < 2 - cards.size(); i++) {
-        cards.push_back(_shoe->draw());
+    if(cards.size() < 2) {
+        for (int i = 0; i < 2 - cards.size(); i++)
+        {
+            cards.push_back(_shoe->draw());
+        }
     }
     _player->receive(cards);
 }

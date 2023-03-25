@@ -38,11 +38,7 @@ int main(int argc, char *argv[]) {
     auto shoe = new Shoe(Rule::instance()->deck);
     Simulation* simulation;
     if(Config::instance()->parameters.fixCards()) {
-        auto playersHand = Config::instance()->parameters.playersHand;
-        auto card0Rank = playersHand[0] == 'T' ? 10 : playersHand[0] == 'A' ? 1 : playersHand[0] - '0';
-        auto card1Rank = playersHand[1] == 'T' ? 10 : playersHand[1] == 'A' ? 1 : playersHand[1] - '0';
-        auto dealersUpCardRank = Config::instance()->parameters.dealersUpCardRank;
-        simulation = new SimulationWithSameHand(dealer, player, shoe, card0Rank, card1Rank, dealersUpCardRank);
+        simulation = new SimulationWithSameHand(dealer, player, shoe, Config::instance()->parameters.playersHand, Config::instance()->parameters.dealersUpCardRank);
     }
     else {
         simulation = new Simulation(dealer, player, shoe);

@@ -4,7 +4,7 @@
 
 class SimulationWithSameHand : public Simulation {
 public:
-    SimulationWithSameHand(Dealer*, Player*, Shoe*, int, int, int);
+    SimulationWithSameHand(Dealer*, Player*, Shoe*, std::string, int);
     virtual ~SimulationWithSameHand();
     virtual void start() override;
 
@@ -13,7 +13,6 @@ protected:
     virtual void dealHandToDealer() override;
 
 private:
-    const int _card0Rank;
-    const int _card1Rank;
+    const std::string _playersHand;
     const int _dealersUpCardRank;
 };

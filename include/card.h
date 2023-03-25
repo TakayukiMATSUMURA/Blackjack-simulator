@@ -14,6 +14,7 @@ public:
 
     static Card* getInstance(std::string);
     static std::vector<Card*> getDeck(int = 1);
+    static int getRank(char);
 
     std::string toString() const { return _str; }
     const int rank;

@@ -93,3 +93,7 @@ std::vector<Card*> Card::getDeck(int set) {
     }
     return result;
 }
+
+int Card::getRank(char c) {
+    return c == 'T' ? 10 : c == 'A' ? 1 : c - '0';
+}
