@@ -20,7 +20,7 @@ void Simulation::dealHandToPlayer() {
 
 void Simulation::dealHandToDealer() {
     auto upCard = _shoe->draw();
-    auto holeCard = _shoe->draw();
+    auto holeCard = Config::instance()->parameters.isNoHoleCard ? nullptr : _shoe->draw();
     _dealer->dealHandToSelf(upCard, holeCard);
     _player->count(upCard);
 }

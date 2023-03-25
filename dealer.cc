@@ -2,6 +2,7 @@
 
 Dealer::Dealer() {
     _hand = nullptr;
+    _upCard = _holeCard = nullptr;
     _handRankCounter = new Counter<std::string>();
 
     for(int i = 0; i < 10; i++) {
@@ -27,13 +28,15 @@ Dealer::~Dealer() {
 }
 
 void Dealer::dealHandToSelf(Card* upCard, Card* holeCard) {
-    std::vector<Card*> cards;
     _upCard = upCard;
-    cards.push_back(_upCard);
-    _holeCard = holeCard;
-    cards.push_back(_holeCard);
 
-    _hand = new Hand(cards);
+    if (holeCard != nullptr) {
+        std::vector<Card *> cards;
+        cards.push_back(_upCard);
+        _holeCard = holeCard;
+        cards.push_back(_holeCard);
+        _hand = new Hand(cards);
+    }
 
     if(Config::instance()->isDebugMode) {
         std::cout << "Dealer's upcard:" << _upCard->toString() << std::endl;
@@ -45,11 +48,11 @@ bool Dealer::has(int rank) const {
 }
 
 bool Dealer::hasBlackjack() const {
-    return _hand->isBlackjack();
+    return _hand != nullptr && _hand->isBlackjack();
 }
 
 bool Dealer::isBusted() const {
-    return _hand->isBusted();
+    return _hand != nullptr && _hand->isBusted();
 }
 
 void Dealer::recordResult() {
@@ -71,6 +74,14 @@ void Dealer::recordResult() {
 }
 
 void Dealer::doAction(Player* player, Shoe* shoe) {
+    if (_holeCard == nullptr) {
+        std::vector<Card *> cards;
+        cards.push_back(_upCard);
+        _holeCard = shoe->draw();
+        cards.push_back(_holeCard);
+        _hand = new Hand(cards);
+    }
+
     player->count(_holeCard);
 
     while(_hand->rank() < 17 || (_hand->isSoft(17) && Rule::instance()->hitSoft17)) {
