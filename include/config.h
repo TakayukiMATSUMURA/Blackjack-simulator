@@ -19,7 +19,7 @@ public:
     }
 
     const bool isDebugMode;
-    const bool displaysDealerDetails;
+    const bool displaysDetailResult;
     const std::string strategy;
     const int betSpread;
     const int game;
@@ -32,7 +32,7 @@ public:
 
     struct Parameters {
         bool isDebugMode = false;
-        bool displaysDealerDetails = false;
+        bool displaysDetailResult = false;
         std::string strategy = "basic";
         int betSpread = 1;
         int game = 0;

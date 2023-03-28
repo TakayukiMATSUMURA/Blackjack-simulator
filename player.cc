@@ -261,8 +261,6 @@ std::string Player::toString() const {
     result += "Hand distribution\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
     result += "Bankroll distribution(per shoe)\n" + _diffBetweenShufflesCounter->toStringInDescendingOrder() + "\n\n";
     _diffBetweenShufflesCounter->saveDataTo("data/bankroll_distribution.csv");
-    auto ev = expectedValue() > 0 ? "+" + std::to_string(expectedValue() * 100) :
-        std::to_string(expectedValue() * 100);
-    result += "Expected value\n" + ev + "%\n";
+
     return result;
 }

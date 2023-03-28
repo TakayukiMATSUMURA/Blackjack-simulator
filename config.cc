@@ -3,7 +3,7 @@
 Config::Parameters Config::parameters;
 
 Config::Config(Parameters params) : isDebugMode(params.isDebugMode),
-                                    displaysDealerDetails(params.displaysDealerDetails),
+                                    displaysDetailResult(params.displaysDetailResult),
                                     strategy(params.strategy),
                                     betSpread(params.betSpread),
                                     game(params.game),

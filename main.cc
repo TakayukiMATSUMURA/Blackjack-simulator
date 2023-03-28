@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     auto optionInterpreter = new OptionInterpreter();
     optionInterpreter->add("g", " [n:int]:simulation game", [&](std::string arg){ Config::parameters.game = std::stoi(arg); });
     optionInterpreter->add("d", ":debug mode(display all games)", [&](){ Config::parameters.isDebugMode = true; });
-    optionInterpreter->add("dealerdetail", ":display detail dealer's hand distributions", [&](){ Config::parameters.displaysDealerDetails = true; });
+    optionInterpreter->add("detailresult", ":display detail result", [&](){ Config::parameters.displaysDetailResult = true; });
     optionInterpreter->add("deck", " [1|2|6|8|infinite]:deck(default:6)", [&](std::string arg){ Rule::parameters.deck = arg == "infinite" ? INT_MAX : std::stoi(arg); });
     optionInterpreter->add("playershand", ":player's hand(for example T9)", [&](std::string arg){ Config::parameters.playersHand = arg; });
     optionInterpreter->add("dealersupcardrank", ":dealer's upcard rank", [&](std::string arg){ Config::parameters.dealersUpCardRank = arg == "T" ? 10 : arg == "A" ? 1 : std::stoi(arg); });

@@ -84,11 +84,11 @@ void Simulation::start() {
 }
 
 void Simulation::showResult() {
-    std::cout << "Simulation finish" << std::endl;
-    std::cout << std::endl;
-
     std::cout << "Simulation results" << std::endl;
-    std::cout << _dealer->toString() << std::endl;
-    std::cout << std::endl;
-    std::cout << _player->toString() << std::endl;
+    if(Config::instance()->displaysDetailResult) {
+        std::cout << _dealer->toString() << std::endl;
+        std::cout << _player->toString() << std::endl;
+    }
+    auto ev = _player->expectedValue();
+    std::cout << "Expected value:" << (ev > 0 ? "+" : "")  << std::to_string(ev * 100) << "%" << std::endl;
 }
