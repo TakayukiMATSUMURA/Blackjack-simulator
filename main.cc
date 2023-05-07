@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     optionInterpreter->add("playershand", ":player's hand(for example T9)", [&](std::string arg){ Config::parameters.playersHand = arg; });
     optionInterpreter->add("dealersupcardrank", ":dealer's upcard rank", [&](std::string arg){ Config::parameters.dealersUpCardRank = arg == "T" ? 10 : arg == "A" ? 1 : std::stoi(arg); });
     optionInterpreter->add("noholecard", ":dealer checks blackjack or not after player's action", [&](){ Config::parameters.isNoHoleCard = true; });
-    optionInterpreter->add("hitsoft17", ":dealer hits soft 17", [&](){ Rule::instance()->parameters.hitSoft17 = true; });
+    optionInterpreter->add("hitsoft17", ":dealer hits soft 17", [&](){ Rule::parameters.hitSoft17 = true; });
     optionInterpreter->add("s", " [basic|KORookie|KOSmart]:strategy(default:basic)", [&](std::string arg){ Config::parameters.strategy = arg; });
     optionInterpreter->add("b", " [n:int]:bet spread(default:1)", [&](std::string arg){ Config::parameters.betSpread = std::stoi(arg); });
     optionInterpreter->add("n", " [n:int]:num of sample average(default:1)", [&](std::string arg){ Config::parameters.N = std::stoi(arg); });
