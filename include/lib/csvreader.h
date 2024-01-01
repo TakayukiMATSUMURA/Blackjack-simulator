@@ -7,24 +7,30 @@
 #include <sstream>
 #include <iostream>
 
-class CSVReader {
+class CSVReader
+{
 public:
-    CSVReader(std::string fileName) : _fileName(fileName) {
+    CSVReader(std::string fileName) : _fileName(fileName)
+    {
         std::ifstream ifs(fileName);
 
         std::string str;
         std::vector<std::string> lows;
-        while(getline(ifs,str)) {
+        while (getline(ifs, str))
+        {
             std::string token;
             std::istringstream stream(str);
 
             int lowIndex = 0;
             std::string column;
-            while(getline(stream,token,';')){
-                if(lowIndex == 0) {
+            while (getline(stream, token, ';'))
+            {
+                if (lowIndex == 0)
+                {
                     column = token;
                 }
-                if(column == "") {
+                if (column == "")
+                {
                     lows.push_back(token);
                 }
 
@@ -35,10 +41,12 @@ public:
         }
     }
 
-    virtual ~CSVReader() {
+    virtual ~CSVReader()
+    {
     }
 
-    std::string getContent(std::string column, std::string low) {
+    std::string getContent(std::string column, std::string low)
+    {
         return _contents[column][low];
     }
 

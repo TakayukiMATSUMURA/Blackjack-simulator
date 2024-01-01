@@ -10,11 +10,13 @@
 #include "./strategies/KOSmart.h"
 #include "./lib/singleton.h"
 
-class Config : public Singleton<Config> {
+class Config : public Singleton<Config>
+{
 public:
     virtual ~Config();
 
-    static Config* create() {
+    static Config *create()
+    {
         static Config instance(parameters);
         return &instance;
     }
@@ -29,10 +31,11 @@ public:
     const std::string playersHand;
     const std::string playersAction;
     const int dealersUpCardRank;
-  
-    IStrategy* getStrategy();
 
-    struct Parameters {
+    IStrategy *getStrategy();
+
+    struct Parameters
+    {
         bool isDebugMode = false;
         bool displaysDetailResult = false;
         std::string strategy = "basic";
@@ -44,7 +47,8 @@ public:
         std::string playersAction = "";
         int dealersUpCardRank = -1;
 
-        bool fixCards() const {
+        bool fixCards() const
+        {
             return playersHand != "" || dealersUpCardRank != -1;
         }
     };
@@ -54,4 +58,3 @@ public:
 private:
     Config(Parameters);
 };
-

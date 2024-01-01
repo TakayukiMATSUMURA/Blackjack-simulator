@@ -2,9 +2,10 @@
 
 #include "./simulation.h"
 
-class SimulationWithSameHand : public Simulation {
+class SimulationWithSameHand : public Simulation
+{
 public:
-    SimulationWithSameHand(Dealer*, Player*, Shoe*, std::string, int);
+    SimulationWithSameHand(Dealer *, Player *, Shoe *, std::string, int);
     virtual ~SimulationWithSameHand();
     virtual void start() override;
 

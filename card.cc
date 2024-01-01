@@ -1,19 +1,28 @@
 #include "./include/card.h"
 
-Card::Card(std::string arg) : rank(arg[0] == 'A' ? 1 : arg[0] == 'T' ? 10 : arg[0] == 'J' ? 10 : arg[0] == 'Q' ? 10 : arg[0] == 'K' ? 10 : arg[0] - '0'),
-                            suit(arg[1] == 'c' ? 0 : arg[1] == 'd' ? 1 : arg[1] == 'h' ? 2 : arg[2] == 's' ? 3 : -1),
-                            _str(arg) {
+Card::Card(std::string arg) : rank(arg[0] == 'A' ? 1 : arg[0] == 'T' ? 10
+                                                   : arg[0] == 'J'   ? 10
+                                                   : arg[0] == 'Q'   ? 10
+                                                   : arg[0] == 'K'   ? 10
+                                                                     : arg[0] - '0'),
+                              suit(arg[1] == 'c' ? 0 : arg[1] == 'd' ? 1
+                                                   : arg[1] == 'h'   ? 2
+                                                   : arg[2] == 's'   ? 3
+                                                                     : -1),
+                              _str(arg)
+{
 }
 
-Card* Card::getInstance(std::string str) {
-    int rank = (str[0] == 'A') ? 1 :
-        (str[0] == 'T') ? 10 :
-        (str[0] == 'J') ? 11 :
-        (str[0] == 'Q') ? 12 :
-        (str[0] == 'K') ? 13 : str[0] - '0';
-    char suit = (str[1] == 'c') ? 0 :
-        (str[1] == 'd') ? 1 :
-        (str[1] == 'h') ? 2 : 3;
+Card *Card::getInstance(std::string str)
+{
+    int rank = (str[0] == 'A') ? 1 : (str[0] == 'T') ? 10
+                                 : (str[0] == 'J')   ? 11
+                                 : (str[0] == 'Q')   ? 12
+                                 : (str[0] == 'K')   ? 13
+                                                     : str[0] - '0';
+    char suit = (str[1] == 'c') ? 0 : (str[1] == 'd') ? 1
+                                  : (str[1] == 'h')   ? 2
+                                                      : 3;
 
     static Card allCards[52] = {
         Card("Ac"),
@@ -74,18 +83,20 @@ Card* Card::getInstance(std::string str) {
     return &allCards[index];
 }
 
-std::vector<Card*> Card::getDeck(int set) {
-    std::vector<Card*> result;
+std::vector<Card *> Card::getDeck(int set)
+{
+    std::vector<Card *> result;
     std::string ranks[13] = {
-        "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"
-    };
+        "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"};
     std::string suits[4] = {
-        "c", "d", "h", "s"
-    };
+        "c", "d", "h", "s"};
 
-    for(int i = 0; i < set; i++) {
-        for(int r = 0; r < 13; r++) {
-            for(int s = 0; s <= 3; s++) {
+    for (int i = 0; i < set; i++)
+    {
+        for (int r = 0; r < 13; r++)
+        {
+            for (int s = 0; s <= 3; s++)
+            {
                 auto card = getInstance(ranks[r] + suits[s]);
                 result.push_back(card);
             }
@@ -94,6 +105,8 @@ std::vector<Card*> Card::getDeck(int set) {
     return result;
 }
 
-int Card::getRank(char c) {
-    return c == 'T' ? 10 : c == 'A' ? 1 : c - '0';
+int Card::getRank(char c)
+{
+    return c == 'T' ? 10 : c == 'A' ? 1
+                                    : c - '0';
 }

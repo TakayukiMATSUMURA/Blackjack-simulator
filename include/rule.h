@@ -4,7 +4,8 @@
 
 #include "./lib/singleton.h"
 
-class Rule : public Singleton<Rule> {
+class Rule : public Singleton<Rule>
+{
 public:
     virtual ~Rule();
 
@@ -13,7 +14,8 @@ public:
     const int penetration;
     const bool hitSoft17;
 
-    struct Parameters {
+    struct Parameters
+    {
         bool DaS = false;
         int deck = 6;
         bool hitSoft17 = false;
@@ -21,7 +23,8 @@ public:
 
     static Parameters parameters;
 
-    static Rule* create() {
+    static Rule *create()
+    {
         static Rule rule(parameters);
         return &rule;
     }

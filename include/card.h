@@ -3,17 +3,19 @@
 #include <vector>
 #include <string>
 
-enum {
+enum
+{
     A = 1,
     T = 10,
 };
 
-class Card {
+class Card
+{
 public:
     ~Card() {}
 
-    static Card* getInstance(std::string);
-    static std::vector<Card*> getDeck(int = 1);
+    static Card *getInstance(std::string);
+    static std::vector<Card *> getDeck(int = 1);
     static int getRank(char);
 
     std::string toString() const { return _str; }

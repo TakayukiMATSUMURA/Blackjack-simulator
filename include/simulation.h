@@ -5,7 +5,8 @@
 #include "./dealer.h"
 #include "./shoe.h"
 
-class Simulation {
+class Simulation
+{
 public:
     Simulation(Dealer *, Player *, Shoe *);
     virtual ~Simulation();
@@ -16,8 +17,8 @@ protected:
     virtual void dealHandToDealer();
     bool step();
     void showResult();
-  
+
     Dealer *_dealer;
-    Player* _player;
-    Shoe* _shoe;
+    Player *_player;
+    Shoe *_shoe;
 };

@@ -6,14 +6,15 @@
 
 #include "./card.h"
 
-class Hand {
+class Hand
+{
 public:
-    Hand(Card*, int = 0);
-    Hand(std::vector<Card*>&, int = 0);
+    Hand(Card *, int = 0);
+    Hand(std::vector<Card *> &, int = 0);
     virtual ~Hand();
 
     int rank() const;
-    void add(Card*);
+    void add(Card *);
     bool isBlackjack() const;
     bool isBusted() const;
     bool isSoft() const;
@@ -22,14 +23,14 @@ public:
     bool isPairOf(int) const;
     bool isDoubledown() const;
     bool canDoubleDownOrSurrender() const;
-    void doubleDownWith(Card*);
-    Hand* split(Card*, Card*);
+    void doubleDownWith(Card *);
+    Hand *split(Card *, Card *);
     void surrender();
     bool isSurrendered() const;
     int bet() const;
 
-    bool winsAgainst(Hand*) const;
-    bool loses(Hand*) const;
+    bool winsAgainst(Hand *) const;
+    bool loses(Hand *) const;
 
     std::string rankString() const;
     std::string toString() const;
@@ -39,7 +40,7 @@ public:
 private:
     int sum() const;
 
-    std::vector<Card*> _cards;
+    std::vector<Card *> _cards;
     int _bet;
 
     bool _isDoubledown;

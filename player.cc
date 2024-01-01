@@ -1,7 +1,8 @@
 #include "./include/player.h"
 #include "./include/dealer.h"
 
-Player::Player(int bankroll, IStrategy* strategy) {
+Player::Player(int bankroll, IStrategy *strategy)
+{
     _bankroll = bankroll;
     _strategy = strategy;
 
@@ -18,7 +19,8 @@ Player::Player(int bankroll, IStrategy* strategy) {
     _diffBetweenShufflesCounter = new Counter<double>();
 }
 
-Player::~Player() {
+Player::~Player()
+{
     delete _strategy;
     delete _resultCounter;
     delete _handRankCounter;
@@ -30,7 +32,8 @@ Player::~Player() {
     delete _diffBetweenShufflesCounter;
 }
 
-void Player::bet(int unit) {
+void Player::bet(int unit)
+{
     _takesInsurance = false;
 
     int amount = _strategy->betAmount(unit * 2);
@@ -38,173 +41,212 @@ void Player::bet(int unit) {
     _bankroll -= _betAmount;
     _totalBetAmount += _betAmount;
 
-    if(Config::instance()->isDebugMode) {
+    if (Config::instance()->isDebugMode)
+    {
         std::cout << "Player's bankroll:" << (double)(_bankroll + _betAmount) / 2 << std::endl;
         std::cout << "Strategy:" << _strategy->toString() << std::endl;
         std::cout << "Player bets:" << unit << std::endl;
     }
 }
 
-int Player::betAmount() const {
+int Player::betAmount() const
+{
     return _betAmount;
 }
 
-void Player::receive(std::vector<Card*>& cards) {
+void Player::receive(std::vector<Card *> &cards)
+{
     auto hand = new Hand(cards, _betAmount);
-    for(Card* card : cards) {
+    for (Card *card : cards)
+    {
         count(card);
     }
     _hands.push_back(hand);
 
-    if(Config::instance()->isDebugMode) {
+    if (Config::instance()->isDebugMode)
+    {
         std::cout << "Player's hand:" << hand->toString() << std::endl;
     }
 }
 
-void Player::getPrize(float rate, Hand* hand) {
-    if(hand == nullptr) hand = _hands[0];
+void Player::getPrize(float rate, Hand *hand)
+{
+    if (hand == nullptr)
+        hand = _hands[0];
 
     int prize = hand->bet() * rate;
     _bankroll += prize;
     _totalPrizeAmount += prize;
 
-    if(Config::instance()->isDebugMode) {
-        std::cout << "Player gets " << prize  << " with " << hand->toString() << std::endl;
+    if (Config::instance()->isDebugMode)
+    {
+        std::cout << "Player gets " << prize << " with " << hand->toString() << std::endl;
     }
 }
 
-void Player::doInsuranceOrNot(Dealer* dealer) {
-    if(!_strategy->takesInsurance()) return;
+void Player::doInsuranceOrNot(Dealer *dealer)
+{
+    if (!_strategy->takesInsurance())
+        return;
 
     _takesInsurance = true;
     _bankroll -= _betAmount / 2;
     _totalBetAmount += _betAmount / 2;
 
     _insuranceCounter->count(dealer->hasBlackjack());
-    if(Config::instance()->isDebugMode) {
+    if (Config::instance()->isDebugMode)
+    {
         std::cout << "Player takes insurance(bet:" << (_betAmount / 2) << ")" << std::endl;
     }
 }
 
-bool Player::takesInsurance() const {
+bool Player::takesInsurance() const
+{
     return _takesInsurance;
 }
 
-void Player::doAction(Dealer* dealer, Shoe* shoe) {
-    if(hasBlackjack()) return;
+void Player::doAction(Dealer *dealer, Shoe *shoe)
+{
+    if (hasBlackjack())
+        return;
     int handCounter = 0;
-    while(handCounter < _hands.size()) {
+    while (handCounter < _hands.size())
+    {
         auto currentHand = _hands[handCounter++];
         Action action = Action::Invalid;
 
-        if(Config::instance()->isDebugMode) {
+        if (Config::instance()->isDebugMode)
+        {
             std::cout << "Player's hand:" << currentHand->toString() << std::endl;
         }
-        while(action != Action::Stand && action != Action::DoubleDown && action != Action::Surrender && !currentHand->isBusted()) {
+        while (action != Action::Stand && action != Action::DoubleDown && action != Action::Surrender && !currentHand->isBusted())
+        {
             action = _strategy->getAction(currentHand, dealer->upCardRank());
-            if(_hands.size() > 2) {
-                if(action == Action::Surrender) action = Action::Hit;
-                if(action == Action::DoubleDown && !Rule::instance()->DaS) action = Action::Hit;
+            if (_hands.size() > 2)
+            {
+                if (action == Action::Surrender)
+                    action = Action::Hit;
+                if (action == Action::DoubleDown && !Rule::instance()->DaS)
+                    action = Action::Hit;
             }
 
-            if(Config::instance()->isDebugMode && !currentHand->isBusted()) {
-                auto actionString = action == Action::Hit ? "Hit" :
-                    action == Action::Surrender ? "Surrender" :
-                    action == Action::Split ? "Split" :
-                    action == Action::DoubleDown ? "Double down" : "Stand";
+            if (Config::instance()->isDebugMode && !currentHand->isBusted())
+            {
+                auto actionString = action == Action::Hit ? "Hit" : action == Action::Surrender ? "Surrender"
+                                                                : action == Action::Split       ? "Split"
+                                                                : action == Action::DoubleDown  ? "Double down"
+                                                                                                : "Stand";
                 std::cout << "action:" << actionString << std::endl;
             }
 
-            Card* card;
-            switch(action) {
-                case Action::Hit:
-                    card = shoe->draw();
-                    count(card);
-                    currentHand->add(card);
-                    break;
-                case Action::DoubleDown:
-                    _bankroll -= currentHand->bet();
-                    _totalBetAmount += currentHand->bet();
-                    card = shoe->draw();
-                    count(card);
-                    currentHand->doubleDownWith(card);
-                    _handRankAfterDoubleDownCounter->count(currentHand->rankString());
-                    break;
-                case Action::Split: {
-                    _bankroll -= currentHand->bet();
-                    _totalBetAmount += currentHand->bet();
+            Card *card;
+            switch (action)
+            {
+            case Action::Hit:
+                card = shoe->draw();
+                count(card);
+                currentHand->add(card);
+                break;
+            case Action::DoubleDown:
+                _bankroll -= currentHand->bet();
+                _totalBetAmount += currentHand->bet();
+                card = shoe->draw();
+                count(card);
+                currentHand->doubleDownWith(card);
+                _handRankAfterDoubleDownCounter->count(currentHand->rankString());
+                break;
+            case Action::Split:
+            {
+                _bankroll -= currentHand->bet();
+                _totalBetAmount += currentHand->bet();
 
-                    if(currentHand->isPairOf(A)) {
-                        action = Action::Stand;
-                        handCounter++;
-                    }
-
-                    auto card0 = shoe->draw();
-                    count(card0);
-                    auto card1 = shoe->draw();
-                    count(card1);
-                    auto newHand = currentHand->split(card0, card1);
-                    _hands.push_back(newHand);
-                    break;
+                if (currentHand->isPairOf(A))
+                {
+                    action = Action::Stand;
+                    handCounter++;
                 }
-                case Action::Surrender:
-                    currentHand->surrender();
-                    break;
-                default:
-                    break;
+
+                auto card0 = shoe->draw();
+                count(card0);
+                auto card1 = shoe->draw();
+                count(card1);
+                auto newHand = currentHand->split(card0, card1);
+                _hands.push_back(newHand);
+                break;
+            }
+            case Action::Surrender:
+                currentHand->surrender();
+                break;
+            default:
+                break;
             }
 
-            if(Config::instance()->isDebugMode) {
+            if (Config::instance()->isDebugMode)
+            {
                 std::cout << "hand:" << currentHand->toString() << std::endl;
             }
         }
     }
 }
 
-void Player::adjust(Hand* dealersHand) {
-    if(dealersHand->isBlackjack()) {
-        if(hasBlackjack()) {
+void Player::adjust(Hand *dealersHand)
+{
+    if (dealersHand->isBlackjack())
+    {
+        if (hasBlackjack())
+        {
             getPrize(1, _hands[0]);
         }
 
         return;
     }
 
-    if(hasBlackjack()) {
+    if (hasBlackjack())
+    {
         getPrize(2.5, _hands[0]);
         return;
     }
 
-    for(const auto& hand : _hands) {
-        if(hand->isBusted()) continue;
+    for (const auto &hand : _hands)
+    {
+        if (hand->isBusted())
+            continue;
 
-        if(hand->winsAgainst(dealersHand)) {
+        if (hand->winsAgainst(dealersHand))
+        {
             getPrize(2, hand);
         }
-        else if(hand->loses(dealersHand)) {
-            if(hand->isSurrendered()) {
+        else if (hand->loses(dealersHand))
+        {
+            if (hand->isSurrendered())
+            {
                 getPrize(0.5, hand);
             }
         }
-        else {
+        else
+        {
             getPrize(1, hand);
         }
     }
 }
 
-bool Player::hasBlackjack() const {
+bool Player::hasBlackjack() const
+{
     return _hands.size() == 1 && _hands[0]->isBlackjack();
 }
 
-void Player::count(Card* card) {
+void Player::count(Card *card)
+{
     _strategy->count(card);
 }
 
-void Player::onShuffle() {
+void Player::onShuffle()
+{
     _strategy->reset();
     _buffer.push_back(_bankroll);
 
-    if(_buffer.size() == Config::instance()->N){
+    if (_buffer.size() == Config::instance()->N)
+    {
         auto sum = std::accumulate(_buffer.begin(), _buffer.end(), 0);
         auto average = ((double)sum / Config::instance()->N) / 2;
         _diffBetweenShufflesCounter->count(average);
@@ -214,47 +256,59 @@ void Player::onShuffle() {
     _bankroll = 0;
 }
 
-void Player::recordResult(Dealer* dealer) {
-    if(_hands.size() > 1) {
+void Player::recordResult(Dealer *dealer)
+{
+    if (_hands.size() > 1)
+    {
         _splitCounter->count(_hands.size() - 1);
     }
 
-    for(const auto& hand : _hands) {
+    for (const auto &hand : _hands)
+    {
         _cardCountOfHandCounter->count(hand->size());
 
-        if(!dealer->hasBlackjack()) {
+        if (!dealer->hasBlackjack())
+        {
             _handRankCounter->count(hand->rankString());
         }
         std::string result;
-        if(hand->loses(dealer->hand())) {
+        if (hand->loses(dealer->hand()))
+        {
             result = "lose";
         }
-        else if(hand->winsAgainst(dealer->hand())) {
+        else if (hand->winsAgainst(dealer->hand()))
+        {
             result = "win";
         }
-        else {
+        else
+        {
             result = "tie";
         }
         _resultCounter->count(result);
-        if(hand->isDoubledown()) {
+        if (hand->isDoubledown())
+        {
             _doubledownCounter->count(result);
         }
     }
 }
 
-void Player::resetHands() {
-    for(const auto& hand : _hands) {
+void Player::resetHands()
+{
+    for (const auto &hand : _hands)
+    {
         delete hand;
     }
 
     _hands.clear();
 }
 
-float Player::expectedValue() const {
+float Player::expectedValue() const
+{
     return (float)_totalPrizeAmount / _totalBetAmount - 1;
 }
 
-std::string Player::toString() const {
+std::string Player::toString() const
+{
     std::string result = "############# Player ##############\n";
     result += "Result\n" + _resultCounter->toStringInDescendingOrder() + "\n\n";
     result += "Insurance accuracy\n" + _insuranceCounter->getStringPercentageOf(true) + "\n\n";

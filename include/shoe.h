@@ -8,7 +8,8 @@
 #include "./card.h"
 #include "./rule.h"
 
-class Shoe {
+class Shoe
+{
 public:
     Shoe(int);
     ~Shoe();
@@ -16,11 +17,11 @@ public:
     void shuffle();
     bool needsShuffle() const;
     bool hasInfiniteDeck() const;
-    Card* draw();
-    Card* pickup(int);
+    Card *draw();
+    Card *pickup(int);
 
 private:
     const int _deckNum;
     std::vector<Card *> _cards;
-    std::mt19937* _mt;
+    std::mt19937 *_mt;
 };
