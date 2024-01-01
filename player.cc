@@ -111,7 +111,7 @@ void Player::doAction(Dealer* dealer, Shoe* shoe) {
                 auto actionString = action == Action::Hit ? "Hit" :
                     action == Action::Surrender ? "Surrender" :
                     action == Action::Split ? "Split" :
-                    action == Action::DoubleDown ? "Double down": "Stand";
+                    action == Action::DoubleDown ? "Double down" : "Stand";
                 std::cout << "action:" << actionString << std::endl;
             }
 
@@ -239,9 +239,14 @@ void Player::recordResult(Dealer* dealer) {
         if(hand->isDoubledown()) {
             _doubledownCounter->count(result);
         }
+    }
+}
 
+void Player::resetHands() {
+    for(const auto& hand : _hands) {
         delete hand;
     }
+
     _hands.clear();
 }
 

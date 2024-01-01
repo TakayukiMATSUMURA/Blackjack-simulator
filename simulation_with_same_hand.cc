@@ -40,7 +40,10 @@ void SimulationWithSameHand::start() {
             std::cout << "Game:" << gameCounter << " start" << std::endl;
         }
 
-        step();
+        auto isDone = step();
+	if(!isDone) {
+	  gameCounter--;
+	}
 
         if(Config::instance()->isDebugMode) {
             std::cout << std::endl;

@@ -31,6 +31,7 @@ public:
     void onShuffle();
 
     void recordResult(Dealer*);
+    void resetHands();
 
     float expectedValue() const;
     std::string toString() const;

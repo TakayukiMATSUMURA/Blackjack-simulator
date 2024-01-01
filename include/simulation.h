@@ -14,8 +14,9 @@ public:
 protected:
     virtual void dealHandToPlayer();
     virtual void dealHandToDealer();
-    void step();
+    bool step();
     void showResult();
+  
     Dealer *_dealer;
     Player* _player;
     Shoe* _shoe;

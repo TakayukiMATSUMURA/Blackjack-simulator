@@ -28,6 +28,7 @@ public:
     bool hasBlackjack() const;
     bool isBusted() const;
     void recordResult();
+    void resetHand();
     void doAction(Player*, Shoe*);
 
     int upCardRank() const;

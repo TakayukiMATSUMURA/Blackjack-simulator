@@ -5,6 +5,7 @@
 #include "./rule.h"
 #include "./strategies/istrategy.h"
 #include "./strategies/basicstrategy.h"
+#include "./strategies/basicstrategy_build.h"
 #include "./strategies/KORookie.h"
 #include "./strategies/KOSmart.h"
 #include "./lib/singleton.h"
@@ -26,8 +27,9 @@ public:
     const int N;
     const bool isNoHoleCard;
     const std::string playersHand;
+    const std::string playersAction;
     const int dealersUpCardRank;
-
+  
     IStrategy* getStrategy();
 
     struct Parameters {
@@ -39,6 +41,7 @@ public:
         int N = 1;
         bool isNoHoleCard = false;
         std::string playersHand = "";
+        std::string playersAction = "";
         int dealersUpCardRank = -1;
 
         bool fixCards() const {
