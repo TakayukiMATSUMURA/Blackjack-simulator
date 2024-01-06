@@ -128,7 +128,8 @@ std::string Hand::rankString() const
 {
     if (isBlackjack())
         return "BJ";
-    // else if(isBusted()) return "Bust";
+    else if (isBusted())
+        return "Bust";
     return std::to_string(rank());
 }
 

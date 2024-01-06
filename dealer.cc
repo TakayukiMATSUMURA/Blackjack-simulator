@@ -76,7 +76,14 @@ void Dealer::recordResult()
         _handRankCounter->count(_hand->rankString());
     }
     auto index = _upCard->rank == A ? 9 : _upCard->rank - 2;
-    _handRankCounterForEachRanks[index]->count(_hand->rankString());
+    if (isBusted())
+    {
+        _handRankCounterForEachRanks[index]->count("bust");
+    }
+    else
+    {
+        _handRankCounterForEachRanks[index]->count(_hand->rankString());
+    }
 
     _allHandCardCounter->count(_hand->size());
     if (isBusted())
