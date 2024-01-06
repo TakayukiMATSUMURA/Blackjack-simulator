@@ -1,6 +1,6 @@
 CXX = g++
-BINDIR = ./bin
-TARGET = ./bin/blackjack-simulator
+BINDIR = bin
+TARGET = bin/blackjack-simulator
 CXXFLAGS = -Wall -O3 -std=c++11
 SRCS = $(wildcard *.cc)
 OBJDIR = ./obj
