@@ -19,6 +19,7 @@ public:
     static int getRank(char);
 
     std::string toString() const { return _str; }
+    char getRankString() const { return _str[0]; }
     const int rank;
     const int suit;
 

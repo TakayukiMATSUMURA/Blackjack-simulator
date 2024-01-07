@@ -135,16 +135,21 @@ std::string Hand::rankString() const
 
 std::string Hand::toString() const
 {
-    std::string result;
-    for (const auto &card : _cards)
-    {
-        result += card->toString();
-    }
-
+    auto result = toStringCards();
     result += ":" + rankString();
     if (bet() > 0)
     {
         result += " " + std::to_string(bet() / 2) + "bet";
+    }
+    return result;
+}
+
+std::string Hand::toStringCards() const
+{
+    std::string result;
+    for (const auto &card : _cards)
+    {
+        result += card->getRankString();
     }
     return result;
 }

@@ -34,6 +34,7 @@ public:
 
     std::string rankString() const;
     std::string toString() const;
+    std::string toStringCards() const;
 
     int size() const { return _cards.size(); }
 

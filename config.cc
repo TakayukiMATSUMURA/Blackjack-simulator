@@ -56,7 +56,7 @@ IStrategy *Config::getStrategy()
     }
     else if (playersAction != "")
     {
-        return new BasicStrategyBuild(playersAction);
+        return new BasicStrategyBuild(playersHand, playersAction);
     }
 
     return new BasicStrategy();
