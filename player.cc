@@ -248,7 +248,7 @@ void Player::onShuffle()
     if (_buffer.size() == Config::instance()->N)
     {
         auto sum = std::accumulate(_buffer.begin(), _buffer.end(), 0);
-        auto average = ((double)sum / Config::instance()->N) / 2;
+        auto average = std::round((double)sum / Config::instance()->N) / 2;
         _diffBetweenShufflesCounter->count(average);
         _buffer.clear();
     }
