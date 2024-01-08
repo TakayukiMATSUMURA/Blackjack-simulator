@@ -18,6 +18,7 @@ public:
 			return _action == "Hit" ? Action::Hit : _action == "Stand"	  ? Action::Stand
 												: _action == "Split"	  ? Action::Split
 												: _action == "DoubleDown" ? Action::DoubleDown
+												: _action == "Surrender"  ? Action::Surrender
 																		  : Action::Invalid;
 		}
 
