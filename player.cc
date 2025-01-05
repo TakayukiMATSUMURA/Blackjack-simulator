@@ -176,6 +176,7 @@ void Player::doAction(Dealer *dealer, Shoe *shoe)
             }
             case Action::Surrender:
                 currentHand->surrender();
+                getPrize(0.5, currentHand);
                 break;
             default:
                 break;
@@ -216,14 +217,7 @@ void Player::adjust(Hand *dealersHand)
         {
             getPrize(2, hand);
         }
-        else if (hand->loses(dealersHand))
-        {
-            if (hand->isSurrendered())
-            {
-                getPrize(0.5, hand);
-            }
-        }
-        else
+        else if (!hand->loses(dealersHand))
         {
             getPrize(1, hand);
         }
