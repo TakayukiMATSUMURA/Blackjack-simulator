@@ -42,8 +42,8 @@ bool Simulation::step()
         _player->doInsuranceOrNot(_dealer);
     }
 
-    // プレイヤーのアクションを固定している時はディーラーのブラックジャックをスキップする
-    if (_dealer->hasBlackjack() && Config::instance()->playersAction != "")
+    // ノーホールカードではない、かつプレイヤーのアクションを固定している時はディーラーのブラックジャックをスキップする
+    if (_dealer->hasBlackjack() && !Config::instance()->isNoHoleCard && Config::instance()->playersAction != "")
     {
         _dealer->resetHand();
 
@@ -52,27 +52,17 @@ bool Simulation::step()
         return false;
     }
 
-    if (_dealer->hasBlackjack() && !Config::instance()->isNoHoleCard)
-    {
-        if (_player->takesInsurance())
-        {
-            _player->getPrize(1.5);
-        }
-    }
-    else
+    if (!_dealer->hasBlackjack() || Config::instance()->isNoHoleCard)
     {
         _player->doAction(_dealer, _shoe);
     }
 
-    if (_dealer->hasBlackjack() && !Config::instance()->isNoHoleCard)
-    {
-        if (_player->takesInsurance())
-        {
-            _player->getPrize(1.5);
-        }
-    }
-
     _dealer->doAction(_player, _shoe);
+
+    if (_dealer->hasBlackjack() && _player->takesInsurance())
+    {
+        _player->getPrize(1.5);
+    }
 
     _player->adjust(_dealer->hand());
 
