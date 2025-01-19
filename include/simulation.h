@@ -16,7 +16,7 @@ protected:
     virtual void dealHandToPlayer();
     virtual void dealHandToDealer();
     bool step();
-    void showResult();
+    void showResult(int);
 
     Dealer *_dealer;
     Player *_player;

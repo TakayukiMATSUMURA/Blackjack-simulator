@@ -41,7 +41,7 @@ void SimulationWithSameHand::start()
     int gameCounter = 0;
 
     std::cout << "Simulation start" << std::endl;
-    while (gameCounter++ < Config::instance()->game)
+    while (gameCounter < Config::instance()->game)
     {
         _shoe->shuffle();
         if (Config::instance()->isDebugMode)
@@ -50,16 +50,17 @@ void SimulationWithSameHand::start()
         }
 
         auto isDone = step();
-        if (!isDone)
-        {
-            gameCounter--;
-        }
 
         if (Config::instance()->isDebugMode)
         {
             std::cout << std::endl;
         }
+
+        if (isDone)
+        {
+            gameCounter++;
+        }
     }
 
-    showResult();
+    showResult(gameCounter);
 }

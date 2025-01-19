@@ -296,9 +296,9 @@ void Player::resetHands()
     _hands.clear();
 }
 
-float Player::expectedValue() const
+float Player::expectedValue(int gameCount) const
 {
-    return (float)_totalPrizeAmount / _totalBetAmount - 1;
+    return ((float)_bankroll * 100 / 2) / gameCount;
 }
 
 std::string Player::toString() const

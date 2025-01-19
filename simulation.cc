@@ -118,10 +118,10 @@ void Simulation::start()
         }
     }
 end:
-    showResult();
+    showResult(gameCounter);
 }
 
-void Simulation::showResult()
+void Simulation::showResult(int gameCount)
 {
     std::cout << "Simulation results" << std::endl;
     if (Config::instance()->displaysDetailResult)
@@ -129,6 +129,5 @@ void Simulation::showResult()
         std::cout << _dealer->toString() << std::endl;
         std::cout << _player->toString() << std::endl;
     }
-    auto ev = _player->expectedValue();
-    std::cout << "Expected value:" << (ev > 0 ? "+" : "") << std::to_string(ev * 100) << "%" << std::endl;
+    std::cout << "Expected value:" << (float)_player->expectedValue(gameCount) << "%" << std::endl;
 }
