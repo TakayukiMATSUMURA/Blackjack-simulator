@@ -246,8 +246,6 @@ void Player::onShuffle()
         _diffBetweenShufflesCounter->count(average);
         _buffer.clear();
     }
-
-    _bankroll = 0;
 }
 
 void Player::recordResult(Dealer *dealer)
