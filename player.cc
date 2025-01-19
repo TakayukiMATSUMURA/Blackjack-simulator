@@ -294,7 +294,7 @@ void Player::resetHands()
     _hands.clear();
 }
 
-float Player::expectedValue(int gameCount) const
+float Player::houseEdge(int gameCount) const
 {
     return ((float)_bankroll * 100 / 2) / gameCount;
 }

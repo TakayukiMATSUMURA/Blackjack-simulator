@@ -34,7 +34,7 @@ public:
     void recordResult(Dealer *);
     void resetHands();
 
-    float expectedValue(int) const;
+    float houseEdge(int) const;
     std::string toString() const;
 
 private:

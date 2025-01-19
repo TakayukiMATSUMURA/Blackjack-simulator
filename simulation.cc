@@ -129,5 +129,5 @@ void Simulation::showResult(int gameCount)
         std::cout << _dealer->toString() << std::endl;
         std::cout << _player->toString() << std::endl;
     }
-    std::cout << "Expected value:" << (float)_player->expectedValue(gameCount) << "%" << std::endl;
+    std::cout << "House Edge:" << (float)_player->houseEdge(gameCount) << "%" << std::endl;
 }
