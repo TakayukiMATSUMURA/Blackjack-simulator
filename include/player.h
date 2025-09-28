@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <cmath>
 
@@ -39,6 +40,7 @@ public:
 
 private:
     int _bankroll;
+    int _min, _max;
     int _betAmount;
     bool _takesInsurance;
     IStrategy *_strategy;

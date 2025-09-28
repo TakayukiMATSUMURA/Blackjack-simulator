@@ -3,7 +3,7 @@
 
 Player::Player(int bankroll, IStrategy *strategy)
 {
-    _bankroll = bankroll;
+    _bankroll = _min = _max = bankroll;
     _strategy = strategy;
 
     _totalBetAmount = 0;
@@ -198,30 +198,37 @@ void Player::adjust(Hand *dealersHand)
         {
             getPrize(1, _hands[0]);
         }
-
-        return;
     }
-
-    if (hasBlackjack())
+    else
     {
-        getPrize(2.5, _hands[0]);
-        return;
+        if (hasBlackjack())
+        {
+            getPrize(2.5, _hands[0]);
+        }
+        else
+        {
+            for (const auto &hand : _hands)
+            {
+                if (hand->isBusted())
+                    continue;
+
+                if (hand->winsAgainst(dealersHand))
+                {
+                    getPrize(2, hand);
+                }
+                else if (!hand->loses(dealersHand))
+                {
+                    getPrize(1, hand);
+                }
+            }
+        }
     }
 
-    for (const auto &hand : _hands)
-    {
-        if (hand->isBusted())
-            continue;
+    if (_bankroll < _min)
+        _min = _bankroll;
 
-        if (hand->winsAgainst(dealersHand))
-        {
-            getPrize(2, hand);
-        }
-        else if (!hand->loses(dealersHand))
-        {
-            getPrize(1, hand);
-        }
-    }
+    if (_bankroll > _max)
+        _max = _bankroll;
 }
 
 bool Player::hasBlackjack() const
@@ -312,6 +319,7 @@ std::string Player::toString() const
     result += "Hand distribution\n" + _handRankCounter->toStringInDescendingOrder() + "\n\n";
     result += "Bankroll distribution(per shoe)\n" + _diffBetweenShufflesCounter->toStringInDescendingOrder() + "\n\n";
     _diffBetweenShufflesCounter->saveDataTo("data/bankroll_distribution.csv");
+    result += "Min:" + std::to_string(_min) + " Max:" + std::to_string(_max) + "\n";
 
     return result;
 }
