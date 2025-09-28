@@ -16,7 +16,6 @@ Shoe::~Shoe()
 void Shoe::shuffle()
 {
     _cards = Card::getDeck(hasInfiniteDeck() ? 1 : _deckNum);
-    std::shuffle(std::begin(_cards), std::end(_cards), *_mt);
 }
 
 bool Shoe::needsShuffle() const
@@ -36,15 +35,15 @@ bool Shoe::hasInfiniteDeck() const
 
 Card *Shoe::draw()
 {
-    if (hasInfiniteDeck())
+    std::uniform_int_distribution<int> rand(0, _cards.size() - 1);
+    auto index = rand(*_mt);
+
+    if (!hasInfiniteDeck())
     {
-        std::uniform_int_distribution<int> rand(0, _cards.size() - 1);
-        return _cards[rand(*_mt)];
+        _cards.erase(_cards.begin() + index);
     }
 
-    auto card = _cards.back();
-    _cards.pop_back();
-    return card;
+    return _cards[index];
 }
 
 Card *Shoe::pickup(int rank)
