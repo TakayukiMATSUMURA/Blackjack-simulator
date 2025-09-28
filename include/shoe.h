@@ -11,7 +11,7 @@
 class Shoe
 {
 public:
-    Shoe(int);
+    Shoe(int, bool);
     ~Shoe();
 
     void shuffle();
@@ -23,5 +23,6 @@ public:
 private:
     const int _deckNum;
     std::vector<Card *> _cards;
+    bool _isShuffleMachine;
     std::mt19937 *_mt;
 };

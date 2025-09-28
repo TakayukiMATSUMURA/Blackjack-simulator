@@ -4,6 +4,7 @@
 Rule::Parameters Rule::parameters;
 
 Rule::Rule(Parameters params) : deck(params.deck),
+                                isShuffleMachine(params.isShuffleMachine),
                                 DaS(params.DaS),
                                 penetration(params.deck == 1 ? 65 : 75),
                                 hitSoft17(params.hitSoft17)

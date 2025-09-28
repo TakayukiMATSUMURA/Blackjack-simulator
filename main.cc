@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
                            { Config::parameters.displaysDetailResult = true; });
     optionInterpreter->add("deck", " [1|2|6|8|infinite]:deck(default:6)", [&](std::string arg)
                            { Rule::parameters.deck = arg == "infinite" ? INT_MAX : std::stoi(arg); });
+    optionInterpreter->add("shoe", ":shoe game(not shuffle machine)", [&]()
+                           { Rule::parameters.isShuffleMachine = false; });
     optionInterpreter->add("playershand", ":player's hand(for example T9)", [&](std::string arg)
                            { Config::parameters.playersHand = arg; });
     optionInterpreter->add("playersaction", ":player's action{Hit|Stand|Split|DoubleDown}", [&](std::string arg)
@@ -52,7 +54,7 @@ int main(int argc, char *argv[])
     auto strategy = Config::instance()->getStrategy();
     auto player = new Player(0, strategy);
     auto dealer = new Dealer();
-    auto shoe = new Shoe(Rule::instance()->deck);
+    auto shoe = new Shoe(Rule::instance()->deck, Rule::instance()->isShuffleMachine);
     Simulation *simulation;
     if (Config::instance()->parameters.fixCards())
     {

@@ -85,7 +85,7 @@ void Simulation::start()
         _shoe->shuffle();
         _player->onShuffle();
 
-        while (!_shoe->needsShuffle())
+        do
         {
             if (Config::instance()->isDebugMode)
             {
@@ -105,7 +105,7 @@ void Simulation::start()
 
             if (++gameCounter == Config::instance()->game)
                 goto end;
-        }
+        } while (!_shoe->needsShuffle());
     }
 end:
     showResult(gameCounter);

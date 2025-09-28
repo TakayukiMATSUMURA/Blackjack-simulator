@@ -1,8 +1,9 @@
 #include "./include/shoe.h"
 
-Shoe::Shoe(int deckNum) : _deckNum(deckNum)
+Shoe::Shoe(int deckNum, bool isShuffleMachine) : _deckNum(deckNum)
 {
     _cards = Card::getDeck(hasInfiniteDeck() ? 1 : _deckNum);
+    _isShuffleMachine = isShuffleMachine;
     std::random_device rnd;
     _mt = new std::mt19937(rnd());
 }
@@ -20,6 +21,9 @@ void Shoe::shuffle()
 
 bool Shoe::needsShuffle() const
 {
+    if (_isShuffleMachine)
+        return true;
+
     if (hasInfiniteDeck())
         return false;
     return _cards.size() <= _deckNum * 52 * (100.0 - Rule::instance()->penetration) / 100;

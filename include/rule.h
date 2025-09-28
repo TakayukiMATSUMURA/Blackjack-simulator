@@ -10,6 +10,7 @@ public:
     virtual ~Rule();
 
     const int deck;
+    const bool isShuffleMachine;
     const bool DaS;
     const int penetration;
     const bool hitSoft17;
@@ -18,6 +19,7 @@ public:
     {
         bool DaS = false;
         int deck = 6;
+        bool isShuffleMachine = true;
         bool hitSoft17 = false;
     };
 
